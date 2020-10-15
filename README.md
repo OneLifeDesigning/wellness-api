@@ -1,1 +1,3 @@
-# gamecamp-api
+Game Camp API
+
+ENDPOINTS
