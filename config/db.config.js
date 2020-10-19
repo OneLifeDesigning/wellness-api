@@ -1,0 +1,19 @@
+const mongoose = require("mongoose");
+mongoose.set("useCreateIndex", true);
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/gamecamp";
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then()
+  .catch();
+
+process.on("SIGINT", () => {
+  mongoose.connection.close(() => {
+    console.log("Mongoose disconnected on app termination");
+    process.exit(0);
+  });
+});
