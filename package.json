@@ -31,8 +31,7 @@
     "mongoose": "^5.7.7",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
-    "multer-storage-cloudinary": "^2.2.1",
-    "supertest-session": "^4.1.0"
+    "multer-storage-cloudinary": "^2.2.1"
   },
   "devDependencies": {
     "jest": "^26.6.0",

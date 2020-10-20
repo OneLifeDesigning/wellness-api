@@ -1,5 +1,4 @@
 const request = require("supertest");
-const session = require("supertest-session");
 
 const app = require("./server");
 const User = require("../models/user.model");
@@ -25,13 +24,13 @@ const camper = {
 };
 
 let cleanApp = 0;
+let Cookies = null;
 
 beforeEach(async () => {
   if (cleanApp === 0) {
     await User.deleteMany({});
   }
 });
-let Cookies;
 describe("Users Endpoints", () => {
   it("Create wa new Tutor", async () => {
     cleanApp = 1;
