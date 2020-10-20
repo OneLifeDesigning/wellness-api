@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth.middleware");
 const usersController = require("../controllers/users.controller");
+const homeController = require("../controllers/home.controller");
 
 router.post(
   "/users/newTutor",
@@ -24,8 +25,6 @@ router.post(
   usersController.logout
 );
 
-router.get("/lessons", authMiddleware.isAuthenticated, homeController.newTutor);
-
-router.get("/home", authMiddleware.isAuthenticated, homeController.newTutor);
+router.get("/home", authMiddleware.isAuthenticated, homeController.show);
 
 module.exports = router;

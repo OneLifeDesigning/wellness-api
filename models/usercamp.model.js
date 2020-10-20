@@ -25,6 +25,6 @@ const userCampSchema = new mongoose.Schema(
   }
 );
 
-const UserCamp = mongoose.model("UserCamp", userCamp);
+const UserCamp = mongoose.model("UserCamp", userCampSchema);
 
 module.exports = UserCamp;
