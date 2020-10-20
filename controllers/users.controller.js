@@ -29,16 +29,7 @@ module.exports.newTutor = (req, res, next) => {
 };
 
 module.exports.newCamper = (req, res, next) => {
-  const { name, lastname, password, birthday, tutorId } = req.body;
-  const user = new User({
-    name: name,
-    lastname: lastname,
-    tutorId: tutorId,
-    password: password,
-    birthday: birthday,
-    terms: terms,
-    role: "camper",
-  });
+  const user = new User(req.body);
 
   user
     .save()
@@ -78,13 +69,13 @@ module.exports.newMonitor = (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, password } = req.body;
 
-  if ((!username || !email) && !password) {
+  if (!username && !password) {
     throw createError(400, "Missing credentials");
   }
 
-  User.findOne({ $or: [{ email: email }, { username: username }] })
+  User.findOne({ username: username })
     .then((user) => {
       if (!user) {
         throw createError(404, "Missing credentials");
