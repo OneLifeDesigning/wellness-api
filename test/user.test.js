@@ -1,7 +1,6 @@
 const request = require("supertest");
-
-const app = require("./server");
 const User = require("../models/user.model");
+const app = require("./server");
 
 const tutor = {
   username: "TutorTest",
@@ -31,15 +30,16 @@ beforeEach(async () => {
     await User.deleteMany({});
   }
 });
+
 describe("Users Endpoints", () => {
-  it("Create wa new Tutor", async () => {
+  it("Create a new Tutor", async () => {
     cleanApp = 1;
     const res = await request(app).post("/api/users/newTutor").send(tutor);
     expect(res.statusCode).toEqual(201);
     camper.tutorId = res.body.id;
   });
 
-  it("Login", async () => {
+  it("Login ", async () => {
     const { username, password } = tutor;
     const res = await request(app)
       .post("/api/users/login")
@@ -54,5 +54,12 @@ describe("Users Endpoints", () => {
       .set("Cookie", [Cookies])
       .send(camper);
     expect(res.statusCode).toEqual(201);
+  });
+
+  it("Logout ", async () => {
+    const res = await request(app)
+      .post("/api/users/logout")
+      .set("Cookie", [Cookies]);
+    expect(res.statusCode).toEqual(204);
   });
 });

@@ -24,4 +24,8 @@ router.post(
   usersController.logout
 );
 
+router.get("/lessons", authMiddleware.isAuthenticated, homeController.newTutor);
+
+router.get("/home", authMiddleware.isAuthenticated, homeController.newTutor);
+
 module.exports = router;

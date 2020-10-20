@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
 
 require("../config/dbtest.config");
 const session = require("../config/session.config");

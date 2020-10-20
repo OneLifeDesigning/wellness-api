@@ -1,5 +1,5 @@
-const User = require("../models/user.model");
 const createError = require("http-errors");
+const User = require("../models/user.model");
 
 module.exports.newTutor = (req, res, next) => {
   const {
@@ -37,36 +37,36 @@ module.exports.newCamper = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.newMonitor = (req, res, next) => {
-  const {
-    name,
-    lastname,
-    password,
-    birthday,
-    email,
-    phone,
-    address,
-    terms,
-  } = req.body;
-  const user = new User({
-    username: username,
-    password: password,
-    name: name,
-    lastname: lastname,
-    email: email,
-    address: address,
-    phone: phone,
-    birthday: birthday,
-    avatar: req.file ? req.file.url : undefined,
-    terms: terms,
-    role: "monitor",
-  });
+// module.exports.newMonitor = (req, res, next) => {
+//   const {
+//     name,
+//     lastname,
+//     password,
+//     birthday,
+//     email,
+//     phone,
+//     address,
+//     terms,
+//   } = req.body;
+//   const user = new User({
+//     username: username,
+//     password: password,
+//     name: name,
+//     lastname: lastname,
+//     email: email,
+//     address: address,
+//     phone: phone,
+//     birthday: birthday,
+//     avatar: req.file ? req.file.url : undefined,
+//     terms: terms,
+//     role: "monitor",
+//   });
 
-  user
-    .save()
-    .then((user) => res.status(201).json(user))
-    .catch(next);
-};
+//   user
+//     .save()
+//     .then((user) => res.status(201).json(user))
+//     .catch(next);
+// };
 
 module.exports.login = (req, res, next) => {
   const { username, password } = req.body;
