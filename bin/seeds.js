@@ -51,11 +51,12 @@ const createUser = (tutorId) => {
       active: true,
       token: generateRandomToken(),
     },
-    role: "test",
+    role: "tutor",
     terms: true,
   });
 
   if (tutorId.length !== 0) {
+    user.role = "camper";
     user.tutorId = tutorId;
   }
 
@@ -76,27 +77,58 @@ const createTutors = () => {
   return Promise.all(tutorArr);
 };
 
-function restoreDatabase() {
+const createMonitor = () => {
+  const user = new User({
+    birthday: generateBirthday(getRandomArbitrary(38, 60)),
+    address: generateAddress(),
+    name: "Juan",
+    lastname: "Martínez Ginés",
+    email: "juanmagi@gamecamp.es",
+    password: 12345678,
+    username: "JuanMaGiCo",
+    avatar: faker.image.avatar(),
+    phone: faker.phone.phoneNumber(),
+    activation: {
+      active: true,
+      token: generateRandomToken(),
+    },
+    role: "monitor",
+    terms: true,
+  });
+
+  return user.save();
+};
+
+const restoreDatabase = () => {
   return Promise.all([User.deleteMany()]);
-}
-function seeds() {
+};
+const campersArr = [];
+const seeds = () => {
   restoreDatabase()
     .then(() => {
-      createTutors()
-        .then((results) => {
-          for (let index = 0; index < results.length; index++) {
-            createUser(results[index])
-              .then((user) => {
-                console.log(user.userName);
-              })
-              .catch();
-          }
+      createMonitor()
+        .then((monitor) => {
+          createTutors()
+            .then(async (tutors) => {
+              for (let index = 0; index < tutors.length; index++) {
+                await createUser(tutors[index])
+                  .then((camper) => {
+                    campersArr.push(camper.id);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
         });
     })
     .catch();
-}
+};
 
 seeds();

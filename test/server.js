@@ -6,15 +6,13 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
-require("./config/db.config");
-const session = require("./config/session.config");
-const cors = require("./config/cors.config");
+require("../config/dbtest.config");
+const session = require("../config/session.config");
 
 /**
  * Configure express
  */
 const app = express();
-app.use(cors);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,7 +27,7 @@ app.use((req, _, next) => {
 /**
  * Configure routes
  */
-const router = require("./config/routes");
+const router = require("../config/routes");
 app.use("/api", router);
 
 // catch 404 and forward to error handler
@@ -65,8 +63,7 @@ app.use(function (error, req, res, next) {
 /**
  * Listen on provided port
  */
-const port = normalizePort(process.env.PORT || "3010");
-app.listen(port);
+app.listen(3001);
 
 // Helper functions
 

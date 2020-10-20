@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 mongoose.set("useCreateIndex", true);
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/gamecamp";
@@ -13,7 +14,6 @@ mongoose
 
 process.on("SIGINT", () => {
   mongoose.connection.close(() => {
-    console.log("Mongoose disconnected on app termination");
     process.exit(0);
   });
 });

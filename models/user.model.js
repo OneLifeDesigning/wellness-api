@@ -62,11 +62,12 @@ const userSchema = new mongoose.Schema(
     },
     address: {
       type: String,
+      minlength: [10, "Name needs at last 3 chars"],
     },
     role: {
       type: String,
-      enum: ["admin", "tutor", "camper", "monitor", "test"],
-      default: "camper",
+      enum: ["admin", "tutor", "camper", "monitor"],
+      default: "tutor",
     },
     terms: {
       type: Boolean,
