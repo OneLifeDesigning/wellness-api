@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      minlength: [10, "Name needs at last 3 chars"],
+      minlength: [10, "Address needs at last 3 chars"],
     },
     role: {
       type: String,
