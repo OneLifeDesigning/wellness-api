@@ -23,6 +23,14 @@ module.exports.new = (req, res, next) => {
 module.exports.show = (req, res, next) => {
   const { id } = req.params;
   Camp.findById(id)
+    .populate({
+      path: "courses",
+      model: "Course",
+      populate: {
+        path: "lessons",
+        model: "Lesson",
+      },
+    })
     .then((camp) => res.status(200).json(camp))
     .catch(next);
 };

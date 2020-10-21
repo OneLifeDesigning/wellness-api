@@ -502,54 +502,37 @@
 					"name": "lessons",
 					"item": [
 						{
-							"name": "Delete Lesson",
+							"name": "View All Lessons",
 							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
+								"method": "GET",
+								"header": [],
 								"url": {
-									"raw": "{{host}}/api/lessons/5f8ff19503b916093c24fceb",
+									"raw": "{{host}}/api/lessons",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"lessons",
-										"5f8ff19503b916093c24fceb"
+										"lessons"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Edit Lesson",
+							"name": "View  Lesson",
 							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \" EDIT - Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
-								},
+								"method": "GET",
+								"header": [],
 								"url": {
-									"raw": "{{host}}/api/lessons/5f8ff19503b916093c24fceb",
+									"raw": "{{host}}/api/lessons/{{lessonId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"lessons",
-										"5f8ff19503b916093c24fceb"
+										"{{lessonId}}"
 									]
 								}
 							},
@@ -585,18 +568,54 @@
 							"response": []
 						},
 						{
-							"name": "View All Lessons",
+							"name": "Edit Lesson",
 							"request": {
-								"method": "GET",
-								"header": [],
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \" EDIT - Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+								},
 								"url": {
-									"raw": "{{host}}/api/lessons",
+									"raw": "{{host}}/api/courses/{{lessonId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"lessons"
+										"courses",
+										"{{lessonId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Lesson",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/courses/{{lessonId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										"{{lessonId}}"
 									]
 								}
 							},
@@ -662,14 +681,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+									"raw": "{{host}}/api/courses/{{courseId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"courses",
-										"5f8ff19503b916093c24fceb"
+										"{{courseId}}"
 									]
 								}
 							},
@@ -691,14 +710,14 @@
 									"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/100/300\",\n  \"dateStart\":  \"2021-01-23\",\n  \"dateEnd\":  \"2021-02-02\"\n}"
 								},
 								"url": {
-									"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+									"raw": "{{host}}/api/courses/{{courseId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"courses",
-										"5f8ff19503b916093c24fceb"
+										"{{courseId}}"
 									]
 								}
 							},
@@ -716,14 +735,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+									"raw": "{{host}}/api/courses/{{courseId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"courses",
-										"5f8ff19503b916093c24fceb"
+										"{{courseId}}"
 									]
 								}
 							},
@@ -843,14 +862,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/camps/5f8f8e5a715e3e7494b6a450",
+									"raw": "{{host}}/api/camps/{{campId}}",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"camps",
-										"5f8f8e5a715e3e7494b6a450"
+										"{{campId}}"
 									]
 								}
 							},
