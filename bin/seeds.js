@@ -2,6 +2,10 @@ require("dotenv").config();
 require("../config/db.config");
 const faker = require("faker");
 const User = require("../models/user.model");
+const Camp = require("../models/camp.model");
+const Course = require("../models/course.model");
+const Lesson = require("../models/lesson.model");
+const UserCamp = require("../models/usercamp.model");
 
 const generateAddress = () => {
   return `${faker.address.streetAddress()}, ${faker.address.zipCode()}, ${faker.address.city()}, ${faker.address.country()}`;
@@ -98,31 +102,120 @@ const createMonitor = () => {
 
   return user.save();
 };
+const createCamp = () => {
+  let date = new Date();
+  const camp = new Camp({
+    name: faker.company.companyName(),
+    edition: "I",
+    description: faker.lorem.paragraph(),
+    image: faker.image.imageUrl(),
+    dateStart: date.setDate(date.getDate() + 20),
+    dateEnd: date.setDate(date.getDate() + 10),
+  });
+
+  return camp.save();
+};
+const createCourse = (monitorId, campId) => {
+  const course = new Course({
+    name: faker.company.companyName(),
+    edition: "I",
+    description: faker.lorem.paragraph(),
+    campId: campId,
+    monitorId: monitorId,
+  });
+
+  return course.save();
+};
+const createLesson = async (monitorId, courseId, type, campStart) => {
+  const lessonsArr = [];
+  let start = new Date(campStart);
+  for (let index = 1; index <= 10; index++) {
+    const lesson = new Lesson({
+      name: faker.lorem.sentence(),
+      description: faker.lorem.paragraph(),
+      image: faker.image.imageUrl(),
+      content: faker.lorem.paragraphs(),
+      dateStart: new Date(start.setDate(campStart.getDate() + index)),
+      type: type,
+      courseId: courseId,
+      monitorId: monitorId,
+    });
+    lessonsArr.push(
+      lesson
+        .save()
+        .then((lesson) => {
+          return lesson._id;
+        })
+        .catch()
+    );
+  }
+  return Promise.all(lessonsArr);
+};
+
+const createUserCamp = async (campers, campId) => {
+  await campers.map((camper) => {
+    const userCamp = new UserCamp({
+      campId: campId,
+      userId: camper,
+    });
+    userCamp.save();
+  });
+};
 
 const restoreDatabase = () => {
-  return Promise.all([User.deleteMany()]);
+  return Promise.all([
+    User.deleteMany(),
+    Camp.deleteMany(),
+    Course.deleteMany(),
+    Lesson.deleteMany(),
+    UserCamp.deleteMany(),
+  ]);
 };
+
 const campersArr = [];
 const seeds = () => {
   restoreDatabase()
     .then(() => {
       createMonitor()
         .then((monitor) => {
-          createTutors()
-            .then(async (tutors) => {
-              for (let index = 0; index < tutors.length; index++) {
-                await createUser(tutors[index])
-                  .then((camper) => {
-                    campersArr.push(camper.id);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
+          createCamp()
+            .then(async (camp) => {
+              createCourse(monitor.id, camp.id)
+                .then(async (course) => {
+                  await createLesson(
+                    monitor.id,
+                    course.id,
+                    "Lesson",
+                    camp.dateStart
+                  )
+                    .then(async (lessonsArr) => {
+                      createTutors()
+                        .then(async (tutorsArr) => {
+                          for (
+                            let index = 0;
+                            index < tutorsArr.length;
+                            index++
+                          ) {
+                            await createUser(tutorsArr[index])
+                              .then((camper) => {
+                                campersArr.push(camper.id);
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          }
+                          createUserCamp(campersArr, camp.id);
+                          console.log("Yarl");
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    })
+                    .catch();
+                })
+                .catch();
             })
-            .catch((err) => {
-              console.log(err);
-            });
+            .catch();
         })
         .catch((err) => {
           console.log(err);
