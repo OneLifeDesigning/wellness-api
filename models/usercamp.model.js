@@ -25,6 +25,12 @@ const userCampSchema = new mongoose.Schema(
   }
 );
 
+userCampSchema.virtual("camps", {
+  ref: "Camp",
+  localField: "campId",
+  foreignField: "_id",
+});
+
 const UserCamp = mongoose.model("UserCamp", userCampSchema);
 
 module.exports = UserCamp;

@@ -1,5 +1,6 @@
-const createError = require("http-errors");
 const Camp = require("../models/camp.model");
+const UserCamp = require("../models/usercamp.model");
+const User = require("../models/user.model");
 
 module.exports.all = (req, res, next) => {
   Camp.find({})
@@ -8,15 +9,10 @@ module.exports.all = (req, res, next) => {
 };
 
 module.exports.new = (req, res, next) => {
-  const { name, edition, description, image, dateStart, dateEnd } = req.body;
-  const camp = new Camp({
-    name: name,
-    edition: edition,
-    description: description,
-    image: req.file ? req.file.url : image,
-    dateStart: dateStart,
-    dateEnd: dateEnd,
-  });
+  if (req.file) {
+    req.body.image = req.file.url;
+  }
+  const camp = new Camp(req.body);
 
   camp
     .save()
@@ -37,6 +33,37 @@ module.exports.edit = (req, res, next) => {
   }
   Camp.findByIdAndUpdate(id, req.body)
     .then((camp) => res.status(200).json(camp))
+    .catch(next);
+};
+module.exports.enroll = (req, res, next) => {
+  const campId = req.params.id;
+  const userId = req.params.user;
+
+  User.find({ tutorId: req.currentUser.id })
+    .then((campers) => {
+      campers.some((camper) => camper.id === userId)
+        ? UserCamp.findOne({ campId, userId })
+            .then((isEnrolled) => {
+              if (isEnrolled) {
+                res.status(204).json();
+              } else {
+                const userCamp = new UserCamp({ campId, userId });
+                userCamp
+                  .save()
+                  .then(() => res.status(201).json())
+                  .catch(next);
+              }
+            })
+            .catch(() => {})
+        : next();
+    })
+    .catch(next);
+};
+module.exports.disenroll = (req, res, next) => {
+  const campId = req.params.id;
+  const userId = req.params.user;
+  UserCamp.findOneAndDelete({ campId, userId })
+    .then(() => res.status(204).json())
     .catch(next);
 };
 

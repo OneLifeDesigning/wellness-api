@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const userCourseSchema = new mongoose.Schema(
+const userLessonSchema = new mongoose.Schema(
   {
-    courseId: {
+    lessonId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      ref: "Lesson",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,11 +24,7 @@ const userCourseSchema = new mongoose.Schema(
     },
   }
 );
-userCourseSchema.virtual("courses", {
-  ref: "Course",
-  localField: "courseId",
-  foreignField: "_id",
-});
-const UserCourse = mongoose.model("UserCourse", userCourseSchema);
 
-module.exports = UserCourse;
+const UserLesson = mongoose.model("UserLesson", userLessonSchema);
+
+module.exports = UserLesson;

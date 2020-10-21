@@ -1,0 +1,852 @@
+{
+	"info": {
+		"_postman_id": "0326de49-9068-4cde-adb2-6e3a01c7887a",
+		"name": "GameCamp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "access",
+					"item": [
+						{
+							"name": "login TUTOR",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"TutorTest\",\n  \"password\": \"12345678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login Admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Admin\",\n  \"password\": \"12345678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login Monitor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"MonitorTest\",\n  \"password\": \"12345678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login CAMPER",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"CamperTest\",\n  \"password\": \"12345678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/api/logout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NewTutor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"TutorTest\",\n  \"name\": \"Tutor\",\n  \"lastname\": \"Test\",\n  \"email\": \"test@test.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/users/newTutor",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"newTutor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NewAdmin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Admin\",\n  \"name\": \"Admin\",\n  \"lastname\": \"Admin\",\n  \"email\": \"admin@admin.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/users/newAdmin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"newAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NewCamper",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"username\": \"CamperTest\",\n  \"name\": \"Camper\",\n  \"lastname\": \"Test\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"2008-10-23\",\n  \"terms\": true,\n  \"role\": \"camper\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/users/newCamper",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"newCamper"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit User",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"tutorId\": \"5f8f826ea72ad46d7208941f\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/users/5f8f8057b030266bd3ffd632",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"5f8f8057b030266bd3ffd632"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NewMonitor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"username\": \"MonitorTest\",\n  \"name\": \"Monitor\",\n  \"lastname\": \"Test\",\n    \"email\": \"monitor@monitor.com\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"1993-10-23\",\n   \"image\": \"https://www.fillmurray.com/200/200\",\n  \"terms\": true,\n  \"role\": \"monitor\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/users/newMonitor",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"newMonitor"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "all Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/5f8f826ea72ad46d7208941f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"5f8f826ea72ad46d7208941f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tutorize",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/5f8f83e5a72ad46d72089421/tutorize",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"5f8f83e5a72ad46d72089421",
+								"tutorize"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "camps",
+			"item": [
+				{
+					"name": "New Camp",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"dateStart\":  \"2021-01-23\",\n  \"dateEnd\":  \"2021-02-02\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/camps/new",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Camp",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/100/300\",\n  \"dateStart\":  \"2021-01-23\",\n  \"dateEnd\":  \"2021-02-02\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8057b030266bd3ffd626",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8057b030266bd3ffd626"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Camp",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8057b030266bd3ffd626",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8057b030266bd3ffd626"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Camps",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View  Camp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8e5a715e3e7494b6a450",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8e5a715e3e7494b6a450"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll Camper",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8e5a715e3e7494b6a450/enroll/5f8f83e5a72ad46d72089421",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8e5a715e3e7494b6a450",
+								"enroll",
+								"5f8f83e5a72ad46d72089421"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll Camper Copy 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8e5a715e3e7494b6a450/enroll/5f8f83e5a72ad46d72089421",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8e5a715e3e7494b6a450",
+								"enroll",
+								"5f8f83e5a72ad46d72089421"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll Camper Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8e5a715e3e7494b6a450/enroll/5f8f83e5a72ad46d72089421",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8e5a715e3e7494b6a450",
+								"enroll",
+								"5f8f83e5a72ad46d72089421"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disenroll Camper",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/camps/5f8f8057b030266bd3ffd626/disenroll/5f8f8058b030266bd3ffd641",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"camps",
+								"5f8f8057b030266bd3ffd626",
+								"disenroll",
+								"5f8f8058b030266bd3ffd641"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "New Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/courses/new",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Course",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/100/300\",\n  \"dateStart\":  \"2021-01-23\",\n  \"dateEnd\":  \"2021-02-02\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View  Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/courses/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"courses",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "lessons",
+			"item": [
+				{
+					"name": "New Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/lessons/new",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Lesson",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \" EDIT - Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/lessons/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/lessons/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Lessons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/lessons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View  Lesson",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/lessons/5f8ff19503b916093c24fceb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons",
+								"5f8ff19503b916093c24fceb"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "89893a13-96d4-4d8f-a258-08d8a31fcd6e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "fceab4cd-feac-4e42-b7b7-3f9eb92035d0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

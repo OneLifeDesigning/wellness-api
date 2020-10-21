@@ -101,14 +101,20 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+userSchema.virtual("campers", {
+  ref: "User",
+  localField: "_id",
+  foreignField: "tutorId",
+});
+
 userSchema.pre("save", function (next) {
   const user = this;
 
   if (user.isModified("password")) {
     bcrypt
       .genSalt(SALT_WORK_FACTOR)
-      .then((salt) => {
-        return bcrypt.hash(user.password, salt).then((hash) => {
+      .then(async (salt) => {
+        return await bcrypt.hash(user.password, salt).then((hash) => {
           user.password = hash;
           next();
         });
@@ -119,8 +125,8 @@ userSchema.pre("save", function (next) {
   }
 });
 
-userSchema.methods.checkPassword = function (password) {
-  return bcrypt.compare(password, this.password);
+userSchema.methods.checkPassword = async (password) => {
+  return await bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model("User", userSchema);
