@@ -25,6 +25,12 @@ const userLessonSchema = new mongoose.Schema(
   }
 );
 
+userLessonSchema.virtual("lessons", {
+  ref: "Lesson",
+  localField: "lessonId",
+  foreignField: "_id",
+});
+
 const UserLesson = mongoose.model("UserLesson", userLessonSchema);
 
 module.exports = UserLesson;

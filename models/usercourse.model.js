@@ -24,11 +24,13 @@ const userCourseSchema = new mongoose.Schema(
     },
   }
 );
+
 userCourseSchema.virtual("courses", {
   ref: "Course",
   localField: "courseId",
   foreignField: "_id",
 });
+
 const UserCourse = mongoose.model("UserCourse", userCourseSchema);
 
 module.exports = UserCourse;

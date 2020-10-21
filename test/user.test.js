@@ -42,7 +42,7 @@ describe("Users Endpoints", () => {
   it("Login ", async () => {
     const { username, password } = tutor;
     const res = await request(app)
-      .post("/api/users/login")
+      .post("/api/login")
       .send({ username: username, password: password.toString() });
     Cookies = res.header["set-cookie"];
     expect(res.statusCode).toEqual(200);
@@ -57,9 +57,7 @@ describe("Users Endpoints", () => {
   });
 
   it("Logout ", async () => {
-    const res = await request(app)
-      .post("/api/users/logout")
-      .set("Cookie", [Cookies]);
+    const res = await request(app).post("/api/logout").set("Cookie", [Cookies]);
     expect(res.statusCode).toEqual(204);
   });
 });

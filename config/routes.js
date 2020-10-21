@@ -69,18 +69,21 @@ router.get("/camps/:id", campController.show);
 router.post(
   "/camps/new",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   campController.new
 );
 router.patch(
   "/camps/:id",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   campController.edit
 );
 router.delete(
   "/camps/:id",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   campController.delete
 );
 
@@ -101,6 +104,7 @@ router.get("/courses/:id", courseController.show);
 router.post(
   "/courses/new",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   courseController.new
 );
@@ -108,6 +112,7 @@ router.post(
 router.patch(
   "/courses/:id",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   courseController.edit
 );
@@ -118,18 +123,32 @@ router.delete(
   courseController.delete
 );
 
+router.post(
+  "/courses/:id/enroll/:user",
+  authMiddleware.isAuthenticated,
+  courseController.enroll
+);
+
+router.delete(
+  "/courses/:id/disenroll/:user",
+  authMiddleware.isAuthenticated,
+  courseController.disenroll
+);
+
 // Lessons
 router.get("/lessons", lessonController.all);
 router.get("/lessons/:id", lessonController.show);
 router.post(
   "/lessons/new",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   lessonController.new
 );
 router.patch(
   "/lessons/:id",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   upload.single("image"),
   lessonController.edit
 );
@@ -141,6 +160,7 @@ router.post(
 router.delete(
   "/lessons/:id",
   authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   lessonController.delete
 );
 

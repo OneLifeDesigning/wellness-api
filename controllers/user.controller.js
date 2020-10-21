@@ -1,60 +1,9 @@
 const createError = require("http-errors");
-const Course = require("../models/course.model");
 const User = require("../models/user.model");
 
 module.exports.all = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).json(users))
-    .catch(next);
-};
-
-module.exports.profile = (req, res, next) => {
-  if (
-    req.currentUser.role !== "admin" &&
-    req.params.id !== req.currentUser.id
-  ) {
-    throw createError(403, "Only view your profile");
-  }
-  User.findById(req.params.id)
-    .populate({
-      path: "campers",
-      model: "User",
-      populate: {
-        path: "camps",
-        model: "UserCamp",
-      },
-    })
-    .then((user) => res.status(200).json(user))
-    .catch(next);
-};
-module.exports.tutorize = (req, res, next) => {
-  User.find({
-    $and: [{ tutorId: req.currentUser.id }, { _id: req.params.id }],
-  })
-    .populate({
-      path: "camps",
-      model: "UserCamp",
-      populate: {
-        path: "courses",
-        model: "UserCourse",
-      },
-    })
-
-    .then((camper) => {
-      res.status(200).json(camper);
-    })
-    .catch(next);
-};
-
-module.exports.edit = (req, res, next) => {
-  const id =
-    req.currentUser.role === "admin" ? req.params.id : req.currentUser.id;
-
-  if (req.file) {
-    req.body.image = req.file.url;
-  }
-  User.findByIdAndUpdate(id, req.body)
-    .then((user) => res.status(200).json(user))
     .catch(next);
 };
 
@@ -133,6 +82,91 @@ module.exports.login = (req, res, next) => {
         });
       }
     })
+    .catch(next);
+};
+
+module.exports.profile = (req, res, next) => {
+  if (
+    req.currentUser.role !== "admin" &&
+    req.params.id !== req.currentUser.id
+  ) {
+    throw createError(403, "Only view your profile");
+  }
+  User.findById(req.params.id)
+    .populate({
+      path: "campers",
+      model: "User",
+    })
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "camps",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "courses",
+        model: "Course",
+      },
+    })
+    .populate({
+      path: "lessons",
+      model: "UserLesson",
+      populate: {
+        path: "lessons",
+        model: "Lesson",
+      },
+    })
+    .then((user) => res.status(200).json(user))
+    .catch(next);
+};
+module.exports.tutorize = (req, res, next) => {
+  User.find({
+    $and: [{ tutorId: req.currentUser.id }, { _id: req.params.id }],
+  })
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "camps",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "courses",
+        model: "Course",
+      },
+    })
+    .populate({
+      path: "lessons",
+      model: "UserLesson",
+      populate: {
+        path: "lessons",
+        model: "Lesson",
+      },
+    })
+    .then((camper) => {
+      res.status(200).json(camper);
+    })
+    .catch(next);
+};
+
+module.exports.edit = (req, res, next) => {
+  const id =
+    req.currentUser.role === "admin" ? req.params.id : req.currentUser.id;
+
+  if (req.file) {
+    req.body.image = req.file.url;
+  }
+  User.findByIdAndUpdate(id, req.body)
+    .then((user) => res.status(200).json(user))
     .catch(next);
 };
 
