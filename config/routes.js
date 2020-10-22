@@ -171,12 +171,13 @@ router.get("/attachments", attachmentController.all);
 router.get("/attachments/:id", attachmentController.show);
 
 router.post(
-  "/attachments/new/:target",
+  "/attachments/new/course/:id",
   authMiddleware.isAuthenticated,
   authMiddleware.isAdmin,
   upload.single("image"),
-  attachmentController.new
+  attachmentController.newAtachmentCourse
 );
+
 router.patch(
   "/attachments/:id",
   authMiddleware.isAuthenticated,

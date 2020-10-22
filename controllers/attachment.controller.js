@@ -1,4 +1,7 @@
 const Attachment = require("../models/attachment.model");
+const AttachmentCourse = require("../models/attachment.course.model");
+const AttachmentCamp = require("../models/attachment.camp.model");
+const AttachmentLesson = require("../models/attachment.lesson.model");
 
 module.exports.all = (req, res, next) => {
   Attachment.find({})
@@ -6,15 +9,25 @@ module.exports.all = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.new = (req, res, next) => {
+module.exports.newAtachmentCourse = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
+
   const attachment = new Attachment(req.body);
 
   attachment
     .save()
-    .then((attachment) => res.status(201).json(attachment))
+    .then((attachment) => {
+      const attachmentCourse = new AttachmentCourse({
+        attachmentId: attachment.id,
+        courseId: req.params.id,
+      });
+      attachmentCourse
+        .save()
+        .then(() => res.status(201).json(attachment))
+        .catch(next);
+    })
     .catch(next);
 };
 

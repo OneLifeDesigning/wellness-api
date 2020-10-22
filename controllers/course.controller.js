@@ -4,6 +4,14 @@ const UserCourse = require("../models/user.course.model");
 
 module.exports.all = (req, res, next) => {
   Course.find({})
+    .populate({
+      path: "attachments",
+      model: "AttachmentCourse",
+      populate: {
+        path: "attachments",
+        model: "Attachment",
+      },
+    })
     .then((courses) => res.status(200).json(courses))
     .catch(next);
 };

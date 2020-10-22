@@ -44,7 +44,11 @@ const lessonSchema = new mongoose.Schema(
     },
   }
 );
-
+lessonSchema.virtual("attachments", {
+  ref: "AttachmentLesson",
+  localField: "_id",
+  foreignField: "lessonId",
+});
 const Lesson = mongoose.model("Lesson", lessonSchema);
 
 module.exports = Lesson;

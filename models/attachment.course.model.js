@@ -19,6 +19,10 @@ const attachmentCourseSchema = new mongoose.Schema(
         ret.id = doc._id;
         delete ret._id;
         delete ret.__v;
+        delete ret.courseId;
+        delete ret.createdAt;
+        delete ret.attachmentId;
+        delete ret.updatedAt;
         return ret;
       },
     },

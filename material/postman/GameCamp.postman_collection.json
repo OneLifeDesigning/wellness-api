@@ -9,28 +9,6 @@
 			"name": "users",
 			"item": [
 				{
-					"name": "logout -pre",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/api/logout",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "login",
 					"request": {
 						"method": "POST",
@@ -112,7 +90,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"TutorTest\",\n  \"name\": \"Tutor\",\n  \"lastname\": \"Test\",\n  \"email\": \"test@test.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}"
+							"raw": "{\n \"username\": \"{{username}}\",\n  \"name\": \"Tutor\",\n  \"lastname\": \"Test\",\n  \"email\": \"test@test.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{host}}/api/users/newTutor",
@@ -142,7 +125,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"tutorId\": \"5f8f826ea72ad46d7208941f\"\n}"
+							"raw": "{\n \"name\": \"NOP\"\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/users/{{userId}}",
@@ -172,7 +155,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"username\": \"CamperTest\",\n  \"name\": \"Camper\",\n  \"lastname\": \"Test\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"2008-10-23\",\n  \"terms\": true,\n  \"role\": \"camper\"\n}"
+							"raw": "{\n \"username\": \"{{username}}\",\n  \"name\": \"Camper\",\n  \"lastname\": \"Test\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"2008-10-23\",\n  \"terms\": true,\n  \"role\": \"camper\"\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/users/newCamper",
@@ -448,7 +431,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n \"username\": \"MonitorTest\",\n  \"name\": \"Monitor\",\n  \"lastname\": \"Test\",\n    \"email\": \"monitor@monitor.com\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"1993-10-23\",\n   \"image\": \"https://www.fillmurray.com/200/200\",\n  \"terms\": true,\n  \"role\": \"monitor\"\n}"
+									"raw": "{\n \"username\": {{username}},\n  \"name\": \"Monitor\",\n  \"lastname\": \"Test\",\n    \"email\": \"monitor@monitor.com\",\n  \"password\": \"12345678\",\n  \"birthday\":  \"1993-10-23\",\n   \"image\": \"https://www.fillmurray.com/200/200\",\n  \"terms\": true,\n  \"role\": \"monitor\"\n}"
 								},
 								"url": {
 									"raw": "{{host}}/api/users/newMonitor",
@@ -478,7 +461,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"Admin\",\n  \"name\": \"Admin\",\n  \"lastname\": \"Admin\",\n  \"email\": \"admin@admin.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}"
+									"raw": "{\n \"username\": \"{{username}}\",\n  \"name\": \"Admin\",\n  \"lastname\": \"Admin\",\n  \"email\": \"admin@admin.com\",\n  \"password\": \"12345678\",\n  \"birthday\": \"1962-10-23\",\n  \"terms\": true\n}"
 								},
 								"url": {
 									"raw": "{{host}}/api/users/newAdmin",
@@ -870,6 +853,134 @@
 										"api",
 										"camps",
 										"{{campId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "attachments",
+					"item": [
+						{
+							"name": "View All Attachments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/attachments",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Attachmet",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/attachments/{{attachmentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"{{attachmentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Attachment Course",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. \",\n  \"type\":  \"Image\",\n    \"url\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"{{courseId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/attachments/new/course",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"new",
+										"course"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Attachment",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan.\",\n  \"type\":  \"Image\",\n    \"url\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"{{courseId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/attachments/{{attachmentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"{{attachmentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Attachment",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/attachments/{{attachmentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"{{attachmentId}}"
 									]
 								}
 							},

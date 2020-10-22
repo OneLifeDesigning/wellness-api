@@ -25,6 +25,12 @@ const attachmentLessonSchema = new mongoose.Schema(
   }
 );
 
+attachmentLessonSchema.virtual("attachments", {
+  ref: "Attachment",
+  localField: "attachmentId",
+  foreignField: "_id",
+});
+
 const AttachmentLesson = mongoose.model(
   "AttachmentLesson",
   attachmentLessonSchema
