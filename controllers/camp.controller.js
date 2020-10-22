@@ -1,5 +1,5 @@
 const Camp = require("../models/camp.model");
-const UserCamp = require("../models/usercamp.model");
+const UserCamp = require("../models/user.camp.model");
 const User = require("../models/user.model");
 
 module.exports.all = (req, res, next) => {
@@ -26,9 +26,13 @@ module.exports.show = (req, res, next) => {
     .populate({
       path: "courses",
       model: "Course",
+    })
+    .populate({
+      path: "attachments",
+      model: "Camp",
       populate: {
-        path: "lessons",
-        model: "Lesson",
+        path: "attachments",
+        model: "Attachment",
       },
     })
     .then((camp) => res.status(200).json(camp))
@@ -39,7 +43,7 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  Camp.findByIdAndUpdate(id, req.body)
+  Camp.findByIdAndUpdate(id, req.body, { new: true })
     .then((camp) => res.status(200).json(camp))
     .catch(next);
 };

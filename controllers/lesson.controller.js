@@ -1,5 +1,5 @@
 const Lesson = require("../models/lesson.model");
-const UserLesson = require("../models/userlesson.model");
+const UserLesson = require("../models/user.lesson.model");
 
 module.exports.all = (req, res, next) => {
   Lesson.find({})
@@ -29,7 +29,7 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  Lesson.findByIdAndUpdate(id, req.body)
+  Lesson.findByIdAndUpdate(id, req.body, { new: true })
     .then((lesson) => res.status(200).json(lesson))
     .catch(next);
 };

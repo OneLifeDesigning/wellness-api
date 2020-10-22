@@ -5,7 +5,9 @@ const User = require("../models/user.model");
 const Camp = require("../models/camp.model");
 const Course = require("../models/course.model");
 const Lesson = require("../models/lesson.model");
-const UserCamp = require("../models/usercamp.model");
+const Attachment = require("../models/attachment.model");
+const AttachmentCourse = require("../models/attachment.course.model");
+const UserCamp = require("../models/user.camp.model");
 
 const generateAddress = () => {
   return `${faker.address.streetAddress()}, ${faker.address.zipCode()}, ${faker.address.city()}, ${faker.address.country()}`;
@@ -85,11 +87,11 @@ const createMonitor = () => {
   const user = new User({
     birthday: generateBirthday(getRandomArbitrary(38, 60)),
     address: generateAddress(),
-    name: "Juan",
-    lastname: "Martínez Ginés",
-    email: "juanmagi@gamecamp.es",
+    name: "Monitor",
+    lastname: "Test",
+    email: "monitor@gamecamp.es",
     password: 12345678,
-    username: "JuanMaGiCo",
+    username: "MonitorTest",
     avatar: faker.image.avatar(),
     phone: faker.phone.phoneNumber(),
     activation: {
@@ -101,6 +103,27 @@ const createMonitor = () => {
   });
 
   return user.save();
+};
+const createAdmin = () => {
+  const user = new User({
+    birthday: generateBirthday(getRandomArbitrary(38, 60)),
+    address: generateAddress(),
+    name: "Admin",
+    lastname: "Test",
+    email: "admin@gamecamp.es",
+    password: 12345678,
+    username: "Admin",
+    avatar: faker.image.avatar(),
+    phone: faker.phone.phoneNumber(),
+    activation: {
+      active: true,
+      token: generateRandomToken(),
+    },
+    role: "admin",
+    terms: true,
+  });
+
+  user.save();
 };
 const createCamp = () => {
   let date = new Date();
@@ -116,50 +139,86 @@ const createCamp = () => {
   return camp.save();
 };
 const createCourse = (monitorId, campId) => {
-  const course = new Course({
-    name: faker.company.companyName(),
-    edition: "I",
-    description: faker.lorem.paragraph(),
-    campId: campId,
-    monitorId: monitorId,
-  });
-
-  return course.save();
-};
-const createLesson = async (monitorId, courseId, type, campStart) => {
-  const lessonsArr = [];
-  let start = new Date(campStart);
-  for (let index = 1; index <= 10; index++) {
-    const lesson = new Lesson({
-      name: faker.lorem.sentence(),
+  const coursesArr = [];
+  for (let target = 12; target <= 18; target++) {
+    const course = new Course({
+      name: faker.company.companyName(),
+      edition: "2020",
       description: faker.lorem.paragraph(),
-      image: faker.image.imageUrl(),
-      content: faker.lorem.paragraphs(),
-      dateStart: new Date(start.setDate(campStart.getDate() + index)),
-      type: type,
-      courseId: courseId,
+      campId: campId,
+      target,
       monitorId: monitorId,
     });
-    lessonsArr.push(
-      lesson
+    coursesArr.push(
+      course
         .save()
-        .then((lesson) => {
-          return lesson._id;
+        .then((course) => {
+          createAttachmentCourse(course._id);
+          return course._id;
         })
         .catch()
     );
+  }
+  return Promise.all(coursesArr);
+};
+const createLessons = async (monitorId, campStart, coursesArr) => {
+  const lessonsArr = [];
+  let start = new Date(campStart);
+  for (let z = 0; z <= coursesArr.length; z++) {
+    for (let index = 0; index < 10; index++) {
+      const lesson = new Lesson({
+        name: faker.lorem.sentence(),
+        description: faker.lorem.paragraph(),
+        image: faker.image.imageUrl(),
+        content: faker.lorem.paragraphs(),
+        dateStart: new Date(start.setDate(campStart.getDate() + index)),
+        type: "Lesson",
+        courseId: coursesArr[z],
+        monitorId,
+      });
+      lessonsArr.push(
+        lesson
+          .save()
+          .then((lesson) => {
+            return lesson._id;
+          })
+          .catch()
+      );
+    }
   }
   return Promise.all(lessonsArr);
 };
 
 const createUserCamp = async (campers, campId) => {
-  await campers.map((camper) => {
+  await campers.map((userId) => {
     const userCamp = new UserCamp({
-      campId: campId,
-      userId: camper,
+      campId,
+      userId,
     });
     userCamp.save();
   });
+};
+
+const createAttachment = () => {
+  const attachment = new Attachment({
+    name: faker.system.fileName(),
+    description: faker.lorem.paragraph(),
+    type: faker.system.fileType(),
+    url: faker.system.filePath(),
+  });
+  return attachment.save();
+};
+
+const createAttachmentCourse = (courseId) => {
+  createAttachment()
+    .then((attachment) => {
+      const attachmentCourse = new AttachmentCourse({
+        attachmentId: attachment.id,
+        courseId,
+      });
+      return attachmentCourse.save();
+    })
+    .catch();
 };
 
 const restoreDatabase = () => {
@@ -169,6 +228,7 @@ const restoreDatabase = () => {
     Course.deleteMany(),
     Lesson.deleteMany(),
     UserCamp.deleteMany(),
+    createAdmin(),
   ]);
 };
 
@@ -181,14 +241,9 @@ const seeds = () => {
           createCamp()
             .then(async (camp) => {
               createCourse(monitor.id, camp.id)
-                .then(async (course) => {
-                  await createLesson(
-                    monitor.id,
-                    course.id,
-                    "Lesson",
-                    camp.dateStart
-                  )
-                    .then(async (lessonsArr) => {
+                .then(async (courses) => {
+                  await createLessons(monitor.id, camp.dateStart, courses)
+                    .then(async (lessons) => {
                       createTutors()
                         .then(async (tutorsArr) => {
                           for (
@@ -211,17 +266,25 @@ const seeds = () => {
                           console.log(err);
                         });
                     })
-                    .catch();
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 })
-                .catch();
+                .catch((err) => {
+                  console.log(err);
+                });
             })
-            .catch();
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           console.log(err);
         });
     })
-    .catch();
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 seeds();

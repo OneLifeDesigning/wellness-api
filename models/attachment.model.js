@@ -14,7 +14,7 @@ const attachmentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    file: {
+    url: {
       type: String,
       trim: true,
     },

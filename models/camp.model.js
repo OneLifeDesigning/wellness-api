@@ -44,6 +44,12 @@ campSchema.virtual("courses", {
   foreignField: "campId",
 });
 
+campSchema.virtual("attachments", {
+  ref: "AttachmentCamp",
+  localField: "_id",
+  foreignField: "campId",
+});
+
 const Camp = mongoose.model("Camp", campSchema);
 
 module.exports = Camp;

@@ -5,11 +5,13 @@ const userController = require("../controllers/user.controller");
 const campController = require("../controllers/camp.controller");
 const courseController = require("../controllers/course.controller");
 const lessonController = require("../controllers/lesson.controller");
+const attachmentController = require("../controllers/attachment.controller");
 const homeController = require("../controllers/home.controller");
 const upload = require("./cloudinary.config");
 
+router.get("/home", authMiddleware.isAuthenticated, homeController.show);
+
 // Users
-// OAdmin
 router.get(
   "/users",
   authMiddleware.isAuthenticated,
@@ -164,6 +166,29 @@ router.delete(
   lessonController.delete
 );
 
-router.get("/home", authMiddleware.isAuthenticated, homeController.show);
+// Attachments
+router.get("/attachments", attachmentController.all);
+router.get("/attachments/:id", attachmentController.show);
+
+router.post(
+  "/attachments/new/:target",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  attachmentController.new
+);
+router.patch(
+  "/attachments/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  attachmentController.edit
+);
+router.delete(
+  "/attachments/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  attachmentController.delete
+);
 
 module.exports = router;

@@ -8,6 +8,7 @@ module.exports.all = (req, res, next) => {
 };
 
 module.exports.newTutor = (req, res, next) => {
+  console.log(req.body);
   if (!req.body.email) {
     throw createError(400, "Email is required");
   }
@@ -23,6 +24,7 @@ module.exports.newTutor = (req, res, next) => {
 module.exports.newCamper = (req, res, next) => {
   const user = new User(req.body);
   user.role = "camper";
+  user.turtorId = req.currentUser.id;
 
   user
     .save()
@@ -165,7 +167,7 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  User.findByIdAndUpdate(id, req.body)
+  User.findByIdAndUpdate(id, req.body, { new: true })
     .then((user) => res.status(200).json(user))
     .catch(next);
 };

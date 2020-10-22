@@ -11,12 +11,9 @@ const courseSchema = new mongoose.Schema(
       type: String,
       default: "I",
     },
-    description: {
-      type: String,
-    },
-    image: {
-      type: String,
-    },
+    description: String,
+    image: String,
+    target: String,
     campId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Camp",
@@ -42,6 +39,12 @@ const courseSchema = new mongoose.Schema(
 
 courseSchema.virtual("lessons", {
   ref: "Lesson",
+  localField: "_id",
+  foreignField: "courseId",
+});
+
+courseSchema.virtual("attachments", {
+  ref: "AttachmentCourse",
   localField: "_id",
   foreignField: "courseId",
 });

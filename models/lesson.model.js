@@ -24,7 +24,7 @@ const lessonSchema = new mongoose.Schema(
     },
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Camp",
+      ref: "Course",
     },
     monitorId: {
       type: mongoose.Schema.Types.ObjectId,
