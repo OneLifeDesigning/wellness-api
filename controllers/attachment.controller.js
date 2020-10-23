@@ -7,6 +7,8 @@ module.exports.all = (req, res, next) => {
 };
 
 module.exports.new = (req, res, next) => {
+  req.body.parentId = req.params.parentId;
+
   if (req.file) {
     req.body.image = req.file.url;
   }
@@ -20,8 +22,7 @@ module.exports.new = (req, res, next) => {
 };
 
 module.exports.show = (req, res, next) => {
-  const { id } = req.params;
-  Attachment.findById(id)
+  Attachment.findById(req.params.id)
     .populate({
       path: "courses",
       model: "Course",
@@ -30,18 +31,17 @@ module.exports.show = (req, res, next) => {
     .catch(next);
 };
 module.exports.edit = (req, res, next) => {
-  const { id } = req.params;
   if (req.file) {
     req.body.image = req.file.url;
   }
-  Attachment.findByIdAndUpdate(id, req.body, { new: true })
+
+  Attachment.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((attachment) => res.status(200).json(attachment))
     .catch(next);
 };
 
 module.exports.delete = (req, res, next) => {
-  const { id } = req.params;
-  Attachment.findByIdAndDelete(id)
+  Attachment.findByIdAndDelete(req.params.id)
     .then(() => {
       res.status(204).json();
     })

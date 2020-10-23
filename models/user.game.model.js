@@ -1,29 +1,31 @@
 const mongoose = require("mongoose");
 
-const lessonSchema = new mongoose.Schema(
+const userGameSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      minlength: [6, "Name needs at last 6 chars"],
-    },
-    description: {
+    token: {
       type: String,
     },
-    image: {
+    rating: {
       type: String,
+      trim: true,
     },
-    content: {
+    comment: {
       type: String,
+      trim: true,
     },
-    dateStart: {
-      type: Date,
+    score: {
+      type: String,
+      trim: true,
     },
-    courseId: {
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    gameId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      ref: "Game",
     },
-    monitorId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
@@ -41,11 +43,13 @@ const lessonSchema = new mongoose.Schema(
     },
   }
 );
-lessonSchema.virtual("attachments", {
-  ref: "Attachment",
-  localField: "_id",
-  foreignField: "parentId",
-});
-const Lesson = mongoose.model("Lesson", lessonSchema);
 
-module.exports = Lesson;
+userGameSchema.virtual("games", {
+  ref: "Game",
+  localField: "gameId",
+  foreignField: "_id",
+});
+
+const UserGame = mongoose.model("UserGame", userGameSchema);
+
+module.exports = UserGame;

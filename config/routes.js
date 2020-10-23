@@ -6,6 +6,7 @@ const campController = require("../controllers/camp.controller");
 const courseController = require("../controllers/course.controller");
 const lessonController = require("../controllers/lesson.controller");
 const attachmentController = require("../controllers/attachment.controller");
+const gameController = require("../controllers/game.controller");
 const homeController = require("../controllers/home.controller");
 const upload = require("./cloudinary.config");
 
@@ -167,23 +168,25 @@ router.delete(
 );
 
 // Attachments
-router.get("/attachments", attachmentController.all);
-router.get("/attachments/:id", attachmentController.show);
-
-router.post(
-  "/attachments/new/camp/:id",
+router.get(
+  "/attachments",
   authMiddleware.isAuthenticated,
   authMiddleware.isAdmin,
-  upload.single("file"),
-  attachmentController.newAtachmentCamp
+  attachmentController.all
+);
+router.get(
+  "/attachments/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  attachmentController.show
 );
 
 router.post(
-  "/attachments/new/course/:id",
+  "/attachments/new/:parentId",
   authMiddleware.isAuthenticated,
   authMiddleware.isAdmin,
   upload.single("file"),
-  attachmentController.newAtachmentCourse
+  attachmentController.new
 );
 
 router.patch(
@@ -199,5 +202,40 @@ router.delete(
   authMiddleware.isAdmin,
   attachmentController.delete
 );
+
+// Games
+router.get("/games", gameController.all);
+router.get("/games/:id", gameController.show);
+
+router.post(
+  "/games/new",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("file"),
+  gameController.new
+);
+
+router.patch(
+  "/games/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  gameController.edit
+);
+
+router.delete(
+  "/games/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  gameController.delete
+);
+
+router.post(
+  "/games/:id/start",
+  authMiddleware.isAuthenticated,
+  gameController.start
+);
+
+router.post("/games/complete", gameController.complete);
 
 module.exports = router;

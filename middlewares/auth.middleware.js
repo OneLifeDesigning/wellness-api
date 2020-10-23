@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const jwt = require("jsonwebtoken");
 
 module.exports.isAuthenticated = (req, _, next) => {
   if (req.session.user) {

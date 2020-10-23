@@ -172,7 +172,6 @@ const createLessons = async (monitorId, campStart, coursesArr) => {
         image: faker.image.imageUrl(),
         content: faker.lorem.paragraphs(),
         dateStart: new Date(start.setDate(campStart.getDate() + index)),
-        type: "Lesson",
         courseId: coursesArr[z],
         monitorId,
       });
