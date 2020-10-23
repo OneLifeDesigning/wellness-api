@@ -6,11 +6,7 @@ module.exports.all = (req, res, next) => {
   Course.find({})
     .populate({
       path: "attachments",
-      model: "AttachmentCourse",
-      populate: {
-        path: "attachments",
-        model: "Attachment",
-      },
+      model: "Attachment",
     })
     .then((courses) => res.status(200).json(courses))
     .catch(next);
@@ -33,11 +29,7 @@ module.exports.show = (req, res, next) => {
     .populate("lessons")
     .populate({
       path: "attachments",
-      model: "AttachmentCourse",
-      populate: {
-        path: "attachments",
-        model: "Attachment",
-      },
+      model: "Attachment",
     })
     .then((course) => res.status(200).json(course))
     .catch(next);

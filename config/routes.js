@@ -171,10 +171,18 @@ router.get("/attachments", attachmentController.all);
 router.get("/attachments/:id", attachmentController.show);
 
 router.post(
+  "/attachments/new/camp/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("file"),
+  attachmentController.newAtachmentCamp
+);
+
+router.post(
   "/attachments/new/course/:id",
   authMiddleware.isAuthenticated,
   authMiddleware.isAdmin,
-  upload.single("image"),
+  upload.single("file"),
   attachmentController.newAtachmentCourse
 );
 

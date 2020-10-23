@@ -153,7 +153,7 @@ const createCourse = (monitorId, campId) => {
       course
         .save()
         .then((course) => {
-          createAttachmentCourse(course._id);
+          createAttachment(course._id);
           return course._id;
         })
         .catch()
@@ -180,6 +180,9 @@ const createLessons = async (monitorId, campStart, coursesArr) => {
         lesson
           .save()
           .then((lesson) => {
+            for (let index = 0; index < Math.floor(Math.random(3)); index++) {
+              createAttachment(lesson._id);
+            }
             return lesson._id;
           })
           .catch()
@@ -199,26 +202,15 @@ const createUserCamp = async (campers, campId) => {
   });
 };
 
-const createAttachment = () => {
+const createAttachment = (courseId) => {
   const attachment = new Attachment({
     name: faker.system.fileName(),
     description: faker.lorem.paragraph(),
     type: faker.system.fileType(),
     url: faker.system.filePath(),
+    parentId: courseId,
   });
   return attachment.save();
-};
-
-const createAttachmentCourse = (courseId) => {
-  createAttachment()
-    .then((attachment) => {
-      const attachmentCourse = new AttachmentCourse({
-        attachmentId: attachment.id,
-        courseId,
-      });
-      return attachmentCourse.save();
-    })
-    .catch();
 };
 
 const restoreDatabase = () => {
@@ -240,6 +232,7 @@ const seeds = () => {
         .then((monitor) => {
           createCamp()
             .then(async (camp) => {
+              createAttachment(camp._id);
               createCourse(monitor.id, camp.id)
                 .then(async (courses) => {
                   await createLessons(monitor.id, camp.dateStart, courses)

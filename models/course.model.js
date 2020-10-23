@@ -44,9 +44,9 @@ courseSchema.virtual("lessons", {
 });
 
 courseSchema.virtual("attachments", {
-  ref: "AttachmentCourse",
+  ref: "Attachment",
   localField: "_id",
-  foreignField: "courseId",
+  foreignField: "parentId",
 });
 
 const Course = mongoose.model("Course", courseSchema);

@@ -29,11 +29,7 @@ module.exports.show = (req, res, next) => {
     })
     .populate({
       path: "attachments",
-      model: "Camp",
-      populate: {
-        path: "attachments",
-        model: "Attachment",
-      },
+      model: "Attachment",
     })
     .then((camp) => res.status(200).json(camp))
     .catch(next);
