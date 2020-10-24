@@ -92,7 +92,8 @@ module.exports.deleteParticipants = (req, res, next) => {
 };
 
 module.exports.getNotifications = (req, res, next) => {
-  Notification.find({})
+  Notification.find({ userId: req.currentUser.id })
+    .populate("chat")
     .then((notifications) => res.status(200).json(notifications))
     .catch(next);
 };

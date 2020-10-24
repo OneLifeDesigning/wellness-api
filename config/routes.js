@@ -289,13 +289,13 @@ router.post(
 );
 
 router.get(
-  "/chats/notifications",
+  "/notifications",
   authMiddleware.isAuthenticated,
   chatsController.getNotifications
 );
 
 router.delete(
-  "/chats/notifications/:id",
+  "/notifications/:id",
   authMiddleware.isAuthenticated,
   chatsController.deleteNotification
 );

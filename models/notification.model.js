@@ -24,6 +24,11 @@ const notificationSchema = new mongoose.Schema(
     },
   }
 );
+notificationSchema.virtual("chat", {
+  ref: "Chat",
+  localField: "chatId",
+  foreignField: "_id",
+});
 
 const Notification = mongoose.model("Notification", notificationSchema);
 
