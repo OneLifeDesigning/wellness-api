@@ -7,6 +7,8 @@ const courseController = require("../controllers/course.controller");
 const lessonController = require("../controllers/lesson.controller");
 const attachmentController = require("../controllers/attachment.controller");
 const gameController = require("../controllers/game.controller");
+const newsController = require("../controllers/news.controller");
+const chatsController = require("../controllers/chat.controller");
 const homeController = require("../controllers/home.controller");
 const upload = require("./cloudinary.config");
 
@@ -236,6 +238,66 @@ router.post(
   gameController.start
 );
 
-router.post("/games/complete", gameController.complete);
+// News
+router.get("/news", newsController.all);
+router.get("/news/:id", newsController.show);
+
+router.post(
+  "/news/new",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("file"),
+  newsController.new
+);
+
+router.patch(
+  "/news/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  newsController.edit
+);
+
+router.delete(
+  "/news/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  newsController.delete
+);
+// Chats
+router.get("/chats", authMiddleware.isAuthenticated, chatsController.all);
+router.get("/chats/:id", authMiddleware.isAuthenticated, chatsController.show);
+
+router.patch(
+  "/chats/:id/participants",
+  authMiddleware.isAuthenticated,
+  chatsController.addParticipants
+);
+
+router.delete(
+  "/chats/:id/participants/:participantId",
+  authMiddleware.isAuthenticated,
+  chatsController.deleteParticipants
+);
+
+router.post("/chats/new", authMiddleware.isAuthenticated, chatsController.new);
+
+router.post(
+  "/chats/:id/message",
+  authMiddleware.isAuthenticated,
+  chatsController.newMessage
+);
+
+router.get(
+  "/chats/notifications",
+  authMiddleware.isAuthenticated,
+  chatsController.getNotifications
+);
+
+router.delete(
+  "/chats/notifications/:id",
+  authMiddleware.isAuthenticated,
+  chatsController.deleteNotification
+);
 
 module.exports = router;

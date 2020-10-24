@@ -10,6 +10,27 @@
 			"item": [
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5020ea73-52bd-4ee2-a0cf-25d2eb74e9c4",
+								"exec": [
+									"const response = pm.response.json()",
+									"if (response.role ===  'tutor') {",
+									"    pm.globals.set(\"tutorId\", response.id);",
+									"} else if (response.role ===  'camper') {",
+									"    pm.globals.set(\"camperId\", response.id);",
+									"} else if (response.role ===  'monitor') {",
+									"    pm.globals.set(\"monitorId\", response.id);",
+									"} else {",
+									"    pm.globals.set(\"adminId\", response.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -78,6 +99,19 @@
 				},
 				{
 					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "03cdc670-10ca-49a8-8c19-b74051b0d185",
+								"exec": [
+									"const response = pm.response.json()",
+									"pm.globals.set(\"tutorId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -143,6 +177,19 @@
 				},
 				{
 					"name": "createCamper",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d12b2371-2e73-4a4d-90f4-3c03e9deebde",
+								"exec": [
+									"const response = pm.response.json()",
+									"pm.globals.set(\"camperId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -233,6 +280,49 @@
 								"lessons",
 								"{{lessonId}}",
 								"completed"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "contents",
+			"item": [
+				{
+					"name": "View  Content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/contents/{{contentId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"contents",
+								"{{contentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Contents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/contents",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"contents"
 							]
 						}
 					},
@@ -394,6 +484,207 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "games",
+			"item": [
+				{
+					"name": "View  Game",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/games/{{gameId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "View  Game",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/games/{{gameId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"games",
+										"{{gameId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "View  All Games",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/games/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"games",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "View  Game",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/games/{{gameId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"games",
+										"{{gameId}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Start Game",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/games/{{gameId}}/start",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"games",
+								"{{gameId}}",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Complete Game",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmVtZSI6IkFkbWluIiwiaWF0IjoxNjAzNDkyODk3LCJleHAiOjE2MDM0OTY0OTd9.y5uB6gMqCznU7VXxWtjjKBznzTuopF1LkP9xdv9w93g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmVtZSI6IkFkbWluIiwiaWF0IjoxNjAzNDc3NTQ2LCJleHAiOjE2MDM0ODExNDZ9.5yutDgjCzLkRi0Jl1wfkiwO6yaFJn2MfYUEEcYnu1yE",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": \"5\", \"score\": \"1000\", \"comment\": \"Hello world\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/games/complete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"games",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "news",
+			"item": [
+				{
+					"name": "View All News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/lessons",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View  News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/news/{{newsId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"news",
+								"{{newsId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "ADMIN",
 			"item": [
 				{
@@ -419,6 +710,19 @@
 						},
 						{
 							"name": "NewMonitor",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cb23f4f7-627b-4271-8cf1-97a9719ca694",
+										"exec": [
+											"const response = pm.response.json()",
+											"pm.globals.set(\"monitorId\", response.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -449,6 +753,19 @@
 						},
 						{
 							"name": "NewAdmin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6eccf542-ce33-4bb3-8add-6d20e6962cb7",
+										"exec": [
+											"const response = pm.response.json()",
+											"pm.globals.set(\"adminId\", response.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -603,6 +920,295 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "news",
+					"item": [
+						{
+							"name": "View All News",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/lessons",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"lessons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View  News",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/news/{{newsId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"news",
+										"{{newsId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New News",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4459cf73-dcb0-4f80-b0dc-0ba77bac1f3a",
+										"exec": [
+											"const response = pm.response.json()",
+											"pm.globals.set(\"newsId\", response.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"subtitle\": \"Duodecima\",\n  \"content\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/news/new",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"news",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit News",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"image\": \"https://picsum.photos/100/300\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/news/{{newsId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"news",
+										"{{newsId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete News",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/news/{{newsId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"news",
+										"{{newsId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "content",
+					"item": [
+						{
+							"name": "View All Contents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/contents",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"contents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View  Content",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/contents/{{contentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"contents",
+										"{{contentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Content",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \" Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/contents/new",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"contents",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Content",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \" EDIT - Me cago en tus muelas jarl no te digo trigo por no llamarte Rodrigor amatomaa\",\n  \"edition\": \"Duodecima\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. Al ataquerl papaar papaar pecador hasta luego Lucas la caidita amatomaa me cago en tus muelas benemeritaar a wan benemeritaar torpedo. Apetecan ahorarr fistro sexuarl. Jarl amatomaa diodenoo ahorarr la caidita tiene musho peligro ahorarr. Qué dise usteer quietooor a peich diodenoo diodeno tiene musho peligro se calle ustée apetecan torpedo se calle ustée.\",\n  \"image\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"5f8ff19503b916093c24fceb\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/contents/{{contentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"contents",
+										"{{contentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Content",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/contents/{{contentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"contents",
+										"{{contentId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6a99970e-d5f2-41b2-b541-9b84c505f324",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6811c88-26f3-4a87-b187-7732c06fc5c9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -915,10 +1521,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. \",\n  \"type\":  \"Image\",\n    \"url\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"{{courseId}}\"\n}"
+									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. \",\n  \"type\":  \"Image\",\n    \"url\": \"https://picsum.photos/200/300\"\n}"
 								},
 								"url": {
-									"raw": "{{host}}/api/attachments/new/course",
+									"raw": "{{host}}/api/attachments/new/course/5f9193d85098141654be030c",
 									"host": [
 										"{{host}}"
 									],
@@ -926,7 +1532,99 @@
 										"api",
 										"attachments",
 										"new",
-										"course"
+										"course",
+										"5f9193d85098141654be030c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Attachment",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan.\",\n  \"type\":  \"Image\",\n    \"url\": \"https://picsum.photos/200/300\",\n  \"courseId\": \"{{courseId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/attachments/{{attachmentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"{{attachmentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Attachment",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/attachments/{{attachmentId}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"attachments",
+										"{{attachmentId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "games",
+					"item": [
+						{
+							"name": "New Game",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Imagen detalle grafica\",\n  \"description\": \"Lorem fistrum ese pedazo de ese hombree mamaar caballo blanco caballo negroorl a wan a wan. \",\n  \"image\":  \"https://picsum.photos/200/300\",\n  \"type\":  \"Videojuego\",\n    \"url\": \"https://awesomevideogame.gamecamp.com\",\n    \"monitorId\": \"{{monitorId}}\",\n    \"lessonId\": \"{{lessonId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/games/new/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"games",
+										"new",
+										""
 									]
 								}
 							},

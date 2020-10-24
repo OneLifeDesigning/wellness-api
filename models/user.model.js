@@ -120,7 +120,7 @@ userSchema.virtual("courses", {
 });
 
 userSchema.virtual("lessons", {
-  ref: "UserLessons",
+  ref: "UserLesson",
   localField: "_id",
   foreignField: "userId",
 });

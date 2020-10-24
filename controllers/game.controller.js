@@ -30,6 +30,7 @@ module.exports.show = (req, res, next) => {
     .then((game) => res.status(200).json(game))
     .catch(next);
 };
+
 module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;

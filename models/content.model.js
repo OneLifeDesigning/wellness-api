@@ -1,32 +1,25 @@
 const mongoose = require("mongoose");
 
-const lessonSchema = new mongoose.Schema(
+const contentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Name is required"],
       minlength: [6, "Name needs at last 6 chars"],
-      trim: true,
     },
     description: {
       type: String,
+      trim: true,
     },
     image: {
       type: String,
     },
-    content: {
+    type: {
       type: String,
-    },
-    dateStart: {
-      type: Date,
     },
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
-    },
-    monitorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
     },
   },
   {
@@ -42,11 +35,11 @@ const lessonSchema = new mongoose.Schema(
     },
   }
 );
-lessonSchema.virtual("attachments", {
+contentSchema.virtual("attachments", {
   ref: "Attachment",
   localField: "_id",
   foreignField: "parentId",
 });
-const Lesson = mongoose.model("Lesson", lessonSchema);
+const Content = mongoose.model("Content", contentSchema);
 
-module.exports = Lesson;
+module.exports = Content;

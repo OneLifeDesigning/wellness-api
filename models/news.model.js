@@ -1,32 +1,27 @@
 const mongoose = require("mongoose");
 
-const lessonSchema = new mongoose.Schema(
+const newsSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
-      required: [true, "Name is required"],
-      minlength: [6, "Name needs at last 6 chars"],
+      required: [true, "Title is required"],
+      minlength: [6, "Title needs at last 6 chars"],
       trim: true,
     },
-    description: {
+    subtitle: {
       type: String,
+      trim: true,
     },
     image: {
       type: String,
     },
     content: {
       type: String,
-    },
-    dateStart: {
-      type: Date,
+      trim: true,
     },
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
-    },
-    monitorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
     },
   },
   {
@@ -42,11 +37,13 @@ const lessonSchema = new mongoose.Schema(
     },
   }
 );
-lessonSchema.virtual("attachments", {
+
+newsSchema.virtual("attachments", {
   ref: "Attachment",
   localField: "_id",
   foreignField: "parentId",
 });
-const Lesson = mongoose.model("Lesson", lessonSchema);
 
-module.exports = Lesson;
+const News = mongoose.model("News", newsSchema);
+
+module.exports = News;
