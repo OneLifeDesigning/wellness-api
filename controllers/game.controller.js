@@ -72,7 +72,7 @@ module.exports.complete = (req, res, next) => {
     err && next(createError(403));
     UserGame.findOneAndUpdate(
       { token },
-      { token: "", rating, score, comment, isCompleted: true },
+      { rating, score, comment, isCompleted: true },
       { new: true }
     )
       .then(() => res.status(201).json())
