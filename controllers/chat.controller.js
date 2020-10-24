@@ -6,12 +6,25 @@ const Notification = require("../models/notification.model");
 const addParticipantToChat = (chatId, participantsArr) => {
   return Promise.all(
     participantsArr.map((userId) => {
-      const newParticipant = new UserChat({
-        userId,
-        chatId,
-      });
+      UserChat.findOne({ userId, chatId })
+        .then((found) => {
+          if (!found) {
+            const newParticipant = new UserChat({
+              userId,
+              chatId,
+            });
 
-      newParticipant.save().then().catch();
+            newParticipant.save().then().catch();
+          }
+        })
+        .catch();
+    })
+  );
+};
+const deleteParticipantToChat = (chatId, participantsArr) => {
+  return Promise.all(
+    participantsArr.map((userId) => {
+      UserChat.findOneAndDelete({ userId, chatId }).then().catch();
     })
   );
 };
@@ -67,13 +80,13 @@ module.exports.newMessage = (req, res, next) => {
 };
 
 module.exports.addParticipants = (req, res, next) => {
-  addParticipantToChat(chat.id, req.body.participants)
-    .then(() => res.status(201).json(chat))
+  addParticipantToChat(req.params.id, req.body.participants)
+    .then(() => res.status(201).json())
     .catch(next);
 };
 
 module.exports.deleteParticipants = (req, res, next) => {
-  UserChat.findByIdAndUpdate(req.params.id, participant, { new: true })
+  deleteParticipantToChat(req.params.id, req.body.participants)
     .then(() => res.status(204).json())
     .catch(next);
 };

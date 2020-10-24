@@ -275,7 +275,7 @@ router.patch(
 );
 
 router.delete(
-  "/chats/:id/participants/:participantId",
+  "/chats/:id/participants",
   authMiddleware.isAuthenticated,
   chatsController.deleteParticipants
 );
