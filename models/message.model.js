@@ -38,7 +38,7 @@ messageSchema.pre("save", function (next) {
       usersChats.map(async (userChat) => {
         if (userChat.userId !== this.userId) {
           const notification = new Notification({
-            chatId: this.chatId,
+            parentId: this.chatId,
             userId: userChat.userId,
           });
           await notification

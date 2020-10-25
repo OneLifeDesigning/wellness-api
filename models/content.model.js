@@ -21,6 +21,10 @@ const contentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
     },
+    monitorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
@@ -35,11 +39,13 @@ const contentSchema = new mongoose.Schema(
     },
   }
 );
+
 contentSchema.virtual("attachments", {
   ref: "Attachment",
   localField: "_id",
   foreignField: "parentId",
 });
+
 const Content = mongoose.model("Content", contentSchema);
 
 module.exports = Content;

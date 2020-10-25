@@ -24,6 +24,7 @@ module.exports.show = (req, res, next) => {
     .then((lesson) => res.status(200).json(lesson))
     .catch(next);
 };
+
 module.exports.edit = (req, res, next) => {
   const { id } = req.params;
   if (req.file) {
@@ -33,6 +34,7 @@ module.exports.edit = (req, res, next) => {
     .then((lesson) => res.status(200).json(lesson))
     .catch(next);
 };
+
 module.exports.completed = (req, res, next) => {
   const lessonId = req.params.id;
   const userId = req.currentUser.id;

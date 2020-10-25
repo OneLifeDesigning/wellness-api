@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema(
   {
-    chatId: {
+    parentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chat",
     },
@@ -26,7 +26,7 @@ const notificationSchema = new mongoose.Schema(
 );
 notificationSchema.virtual("chat", {
   ref: "Chat",
-  localField: "chatId",
+  localField: "parentId",
   foreignField: "_id",
 });
 

@@ -19,7 +19,7 @@ const newsSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    courseId: {
+    parentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
     },

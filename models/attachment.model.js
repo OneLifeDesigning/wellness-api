@@ -18,6 +18,10 @@ const attachmentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    parentId: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true,

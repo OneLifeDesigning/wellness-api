@@ -1,16 +1,33 @@
 require("dotenv").config();
 require("../config/db.config");
 const faker = require("faker");
-const User = require("../models/user.model");
+const Attachment = require("../models/attachment.model");
 const Camp = require("../models/camp.model");
+const Chat = require("../models/chat.model");
+const Content = require("../models/content.model");
 const Course = require("../models/course.model");
 const Lesson = require("../models/lesson.model");
-const Attachment = require("../models/attachment.model");
-const AttachmentCourse = require("../models/attachment.course.model");
+const Message = require("../models/message.model");
+const News = require("../models/news.model");
+const Notification = require("../models/notification.model");
 const UserCamp = require("../models/user.camp.model");
+const UserChat = require("../models/user.chat.model");
+const User = require("../models/user.model");
 
 const generateAddress = () => {
   return `${faker.address.streetAddress()}, ${faker.address.zipCode()}, ${faker.address.city()}, ${faker.address.country()}`;
+};
+
+const getRandomElementsArr = (arr, maxItems) => {
+  const results = [];
+
+  for (let index = 0; index < maxItems; index++) {
+    const randItem = arr.sort(() => 0.5 - Math.random())[index];
+    if (results.every((item) => item !== randItem)) {
+      results.push(randItem);
+    }
+  }
+  return results;
 };
 
 const getRandomArbitrary = (min, max) => {
@@ -39,10 +56,12 @@ const generateRandomToken = () => {
 };
 
 const createUser = (tutorId) => {
-  const birthday =
-    tutorId.length !== 0
-      ? generateBirthday(getRandomArbitrary(12, 18))
-      : generateBirthday(getRandomArbitrary(38, 60));
+  let birthday = "";
+  if (tutorId.length !== 0) {
+    birthday = generateBirthday(getRandomArbitrary(12, 18));
+  } else {
+    birthday = generateBirthday(getRandomArbitrary(38, 60));
+  }
   const user = new User({
     birthday: birthday,
     address: generateAddress(),
@@ -138,7 +157,8 @@ const createCamp = () => {
 
   return camp.save();
 };
-const createCourse = (monitorId, campId) => {
+
+const createCourses = (monitorId, campId) => {
   const coursesArr = [];
   for (let target = 12; target <= 18; target++) {
     const course = new Course({
@@ -152,15 +172,18 @@ const createCourse = (monitorId, campId) => {
     coursesArr.push(
       course
         .save()
-        .then((course) => {
-          createAttachment(course._id);
-          return course._id;
+        .then(async (course) => {
+          const { id } = course;
+          await createAttachment(id);
+          await createNews(id);
+          return id;
         })
         .catch()
     );
   }
   return Promise.all(coursesArr);
 };
+
 const createLessons = async (monitorId, campStart, coursesArr) => {
   const lessonsArr = [];
   let start = new Date(campStart);
@@ -191,6 +214,37 @@ const createLessons = async (monitorId, campStart, coursesArr) => {
   return Promise.all(lessonsArr);
 };
 
+const createContents = async (monitorId, coursesArr) => {
+  const contentsArr = [];
+  const contentTypes = ["comic", "memes"];
+  for (let z = 0; z <= coursesArr.length; z++) {
+    for (let m = 0; m <= contentTypes.length; m++) {
+      for (let index = 0; index < 4; index++) {
+        const content = new Content({
+          name: faker.lorem.sentence(),
+          description: faker.lorem.paragraph(),
+          image: faker.image.imageUrl(),
+          type: coursesArr[m],
+          courseId: coursesArr[z],
+          monitorId,
+        });
+        contentsArr.push(
+          content
+            .save()
+            .then((content) => {
+              for (let index = 0; index < Math.floor(Math.random(3)); index++) {
+                createAttachment(content._id);
+              }
+              return content._id;
+            })
+            .catch()
+        );
+      }
+    }
+  }
+  return Promise.all(contentsArr);
+};
+
 const createUserCamp = async (campers, campId) => {
   await campers.map((userId) => {
     const userCamp = new UserCamp({
@@ -201,15 +255,80 @@ const createUserCamp = async (campers, campId) => {
   });
 };
 
-const createAttachment = (courseId) => {
+const createAttachment = (parentId) => {
   const attachment = new Attachment({
-    name: faker.system.fileName(),
+    name: faker.random.words(),
     description: faker.lorem.paragraph(),
     type: faker.system.fileType(),
     url: faker.system.filePath(),
-    parentId: courseId,
+    parentId,
   });
   return attachment.save();
+};
+
+const createNews = (parentId) => {
+  const news = new News({
+    title: faker.lorem.words(),
+    subtitle: faker.lorem.sentence(),
+    image: faker.image.imageUrl(),
+    content: faker.lorem.paragraphs(),
+    parentId,
+  });
+  return news.save();
+};
+
+const createChat = async (campers, monitorId) => {
+  await campers.map((userId) => {
+    const chat = new Chat({
+      name: faker.lorem.words(),
+      slogan: faker.lorem.sentence(),
+      image: faker.image.imageUrl(),
+      userId,
+    });
+    chat
+      .save()
+      .then((chat) => {
+        const participants = getRandomElementsArr(
+          campers.filter((uId) => uId !== userId),
+          Math.floor(Math.random() * campers.length)
+        );
+        participants.map((participant) => {
+          const userChat = new UserChat({
+            chatId: chat.id,
+            userId: participant.id,
+          });
+          userChat
+            .save()
+            .then(() => {
+              for (
+                let index = 0;
+                index < Math.floor(Math.random() * 10);
+                index++
+              ) {
+                setTimeout(() => {
+                  const message = new Message({
+                    chatId: chat.id,
+                    userId: participant.id,
+                    text: faker.lorem.sentence(),
+                  });
+                  message
+                    .save()
+                    .then((msg) => {
+                      console.log(
+                        `Msg crreated ${msg.text} in ${Math.floor(
+                          Math.random(1000) * 10
+                        )}`
+                      );
+                    })
+                    .catch();
+                }, Math.floor(Math.random(1000) * 1000));
+              }
+            })
+            .catch(() => {});
+        });
+      })
+      .catch();
+  });
 };
 
 const restoreDatabase = () => {
@@ -218,7 +337,13 @@ const restoreDatabase = () => {
     Camp.deleteMany(),
     Course.deleteMany(),
     Lesson.deleteMany(),
+    Content.deleteMany(),
     UserCamp.deleteMany(),
+    Attachment.deleteMany(),
+    News.deleteMany(),
+    Notification.deleteMany(),
+    Chat.deleteMany(),
+    Message.deleteMany(),
     createAdmin(),
   ]);
 };
@@ -232,51 +357,42 @@ const seeds = () => {
           createCamp()
             .then(async (camp) => {
               createAttachment(camp._id);
-              createCourse(monitor.id, camp.id)
+              createCourses(monitor.id, camp.id)
                 .then(async (courses) => {
                   await createLessons(monitor.id, camp.dateStart, courses)
-                    .then(async (lessons) => {
-                      createTutors()
-                        .then(async (tutorsArr) => {
-                          for (
-                            let index = 0;
-                            index < tutorsArr.length;
-                            index++
-                          ) {
-                            await createUser(tutorsArr[index])
-                              .then((camper) => {
-                                campersArr.push(camper.id);
-                              })
-                              .catch((err) => {
-                                console.log(err);
-                              });
-                          }
-                          createUserCamp(campersArr, camp.id);
-                          console.log("Yarl");
+                    .then(async () => {
+                      await createContents(monitor.id, courses)
+                        .then(async () => {
+                          createTutors()
+                            .then(async (tutorsArr) => {
+                              for (
+                                let index = 0;
+                                index < tutorsArr.length;
+                                index++
+                              ) {
+                                await createUser(tutorsArr[index])
+                                  .then((camper) => {
+                                    campersArr.push(camper.id);
+                                  })
+                                  .catch((err) => console.log(err));
+                              }
+                              await createChat(campersArr, monitor.id);
+                              await createUserCamp(campersArr, camp.id);
+                              console.log("Yarl");
+                            })
+                            .catch((err) => console.log(err));
                         })
-                        .catch((err) => {
-                          console.log(err);
-                        });
+                        .catch((err) => console.log(err));
                     })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                    .catch((err) => console.log(err));
                 })
-                .catch((err) => {
-                  console.log(err);
-                });
+                .catch((err) => console.log(err));
             })
-            .catch((err) => {
-              console.log(err);
-            });
+            .catch((err) => console.log(err));
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 
 seeds();

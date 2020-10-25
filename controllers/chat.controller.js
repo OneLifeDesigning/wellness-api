@@ -3,7 +3,7 @@ const UserChat = require("../models/user.chat.model");
 const Message = require("../models/message.model");
 const Notification = require("../models/notification.model");
 
-const addParticipantToChat = (chatId, participantsArr) => {
+const addParticipantsToChat = (chatId, participantsArr) => {
   return Promise.all(
     participantsArr.map((userId) => {
       UserChat.findOne({ userId, chatId })
@@ -21,7 +21,8 @@ const addParticipantToChat = (chatId, participantsArr) => {
     })
   );
 };
-const deleteParticipantToChat = (chatId, participantsArr) => {
+
+const deleteParticipantsToChat = (chatId, participantsArr) => {
   return Promise.all(
     participantsArr.map((userId) => {
       UserChat.findOneAndDelete({ userId, chatId }).then().catch();
@@ -30,7 +31,7 @@ const deleteParticipantToChat = (chatId, participantsArr) => {
 };
 
 module.exports.all = (req, res, next) => {
-  UserChat.find({})
+  UserChat.find({ userId: req.currentUser.id })
     .then((chats) => res.status(200).json(chats))
     .catch(next);
 };
@@ -58,7 +59,7 @@ module.exports.new = (req, res, next) => {
   chat
     .save()
     .then((chat) => {
-      addParticipantToChat(chat.id, req.body.participants)
+      addParticipantsToChat(chat.id, req.body.participants)
         .then(() => res.status(201).json(chat))
         .catch(next);
     })
@@ -80,13 +81,13 @@ module.exports.newMessage = (req, res, next) => {
 };
 
 module.exports.addParticipants = (req, res, next) => {
-  addParticipantToChat(req.params.id, req.body.participants)
+  addParticipantsToChat(req.params.id, req.body.participants)
     .then(() => res.status(201).json())
     .catch(next);
 };
 
 module.exports.deleteParticipants = (req, res, next) => {
-  deleteParticipantToChat(req.params.id, req.body.participants)
+  deleteParticipantsToChat(req.params.id, req.body.participants)
     .then(() => res.status(204).json())
     .catch(next);
 };
