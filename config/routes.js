@@ -17,8 +17,8 @@ router.get("/home", authMiddleware.isAuthenticated, homeController.show);
 // Users
 router.get(
   "/users",
-  authMiddleware.isAuthenticated,
-  authMiddleware.isAdmin,
+  // authMiddleware.isAuthenticated,
+  // authMiddleware.isAdmin,
   userController.all
 );
 
