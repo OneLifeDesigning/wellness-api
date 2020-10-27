@@ -167,7 +167,7 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  User.findByIdAndUpdate(id, req.body, { new: true })
+  User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
     .then((user) => res.status(200).json(user))
     .catch(next);
 };
