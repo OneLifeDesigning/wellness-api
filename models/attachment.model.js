@@ -19,8 +19,14 @@ const attachmentSchema = new mongoose.Schema(
       trim: true,
     },
     parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      refPath: "onModel",
+    },
+    onModel: {
       type: String,
-      trim: true,
+      required: true,
+      enum: ["Camp", "Course", "Lesson", "Game", "News", "Content", "Chat"],
     },
   },
   {

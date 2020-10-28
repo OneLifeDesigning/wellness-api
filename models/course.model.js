@@ -49,6 +49,12 @@ courseSchema.virtual("attachments", {
   foreignField: "parentId",
 });
 
+courseSchema.virtual("campers", {
+  ref: "UserCourse",
+  localField: "_id",
+  foreignField: "courseId",
+});
+
 const Course = mongoose.model("Course", courseSchema);
 
 module.exports = Course;

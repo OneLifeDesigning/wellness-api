@@ -5,6 +5,7 @@ const userController = require("../controllers/user.controller");
 const campController = require("../controllers/camp.controller");
 const courseController = require("../controllers/course.controller");
 const lessonController = require("../controllers/lesson.controller");
+const contentController = require("../controllers/content.controller");
 const attachmentController = require("../controllers/attachment.controller");
 const gameController = require("../controllers/game.controller");
 const newsController = require("../controllers/news.controller");
@@ -17,8 +18,8 @@ router.get("/home", authMiddleware.isAuthenticated, homeController.show);
 // Users
 router.get(
   "/users",
-  // authMiddleware.isAuthenticated,
-  // authMiddleware.isAdmin,
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
   userController.all
 );
 
@@ -167,6 +168,31 @@ router.delete(
   authMiddleware.isAuthenticated,
   authMiddleware.isAdmin,
   lessonController.delete
+);
+
+// Contents
+router.get("/contents", contentController.all);
+router.get("/contents/:id", contentController.show);
+router.post(
+  "/contents/new",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  contentController.new
+);
+router.patch(
+  "/contents/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  upload.single("image"),
+  contentController.edit
+);
+
+router.delete(
+  "/contents/:id",
+  authMiddleware.isAuthenticated,
+  authMiddleware.isAdmin,
+  contentController.delete
 );
 
 // Attachments

@@ -17,7 +17,7 @@ const lessonSchema = new mongoose.Schema(
     content: {
       type: String,
     },
-    dateStart: {
+    startDate: {
       type: Date,
     },
     courseId: {
@@ -42,11 +42,19 @@ const lessonSchema = new mongoose.Schema(
     },
   }
 );
+
 lessonSchema.virtual("attachments", {
   ref: "Attachment",
   localField: "_id",
   foreignField: "parentId",
 });
+
+lessonSchema.virtual("campers", {
+  ref: "UserLesson",
+  localField: "_id",
+  foreignField: "lessonId",
+});
+
 const Lesson = mongoose.model("Lesson", lessonSchema);
 
 module.exports = Lesson;

@@ -4,9 +4,16 @@ const UserCourse = require("../models/user.course.model");
 
 module.exports.all = (req, res, next) => {
   Course.find({})
+    .populate("lessons")
+    .populate("monitorId")
+    .populate("campId")
     .populate({
       path: "attachments",
       model: "Attachment",
+    })
+    .populate({
+      path: "campers",
+      model: "UserCourse",
     })
     .then((courses) => res.status(200).json(courses))
     .catch(next);
@@ -27,11 +34,20 @@ module.exports.show = (req, res, next) => {
   const { id } = req.params;
   Course.findById(id)
     .populate("lessons")
+    .populate("monitorId")
+    .populate("campId")
     .populate({
       path: "attachments",
       model: "Attachment",
     })
-    .then((course) => res.status(200).json(course))
+    .populate({
+      path: "campers",
+      model: "UserCourse",
+    })
+    .then((course) => {
+      console.log(course);
+      res.status(200).json(course);
+    })
     .catch(next);
 };
 module.exports.edit = (req, res, next) => {
@@ -39,7 +55,7 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  Course.findByIdAndUpdate(id, req.body, { new: true })
+  Course.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
     .then((course) => res.status(200).json(course))
     .catch(next);
 };

@@ -17,10 +17,10 @@ const campSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    dateStart: {
+    startDate: {
       type: Date,
     },
-    dateEnd: {
+    endDate: {
       type: Date,
     },
   },

@@ -5,6 +5,8 @@ const createError = require("http-errors");
 
 module.exports.all = (req, res, next) => {
   Game.find({})
+    .populate("lessonId")
+    .populate("monitorId")
     .then((games) => res.status(200).json(games))
     .catch(next);
 };
@@ -26,6 +28,8 @@ module.exports.new = (req, res, next) => {
 
 module.exports.show = (req, res, next) => {
   Game.findById(req.params.id)
+    .populate("lessonId")
+    .populate("monitorId")
     .populate("scores")
     .then((game) => res.status(200).json(game))
     .catch(next);
@@ -36,7 +40,10 @@ module.exports.edit = (req, res, next) => {
     req.body.image = req.file.url;
   }
 
-  Game.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Game.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((game) => res.status(200).json(game))
     .catch(next);
 };
@@ -74,7 +81,7 @@ module.exports.complete = (req, res, next) => {
     UserGame.findOneAndUpdate(
       { token },
       { rating, score, comment, isCompleted: true },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then(() => res.status(201).json())
       .catch(next);

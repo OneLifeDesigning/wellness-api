@@ -6,11 +6,13 @@ const Camp = require("../models/camp.model");
 const Chat = require("../models/chat.model");
 const Content = require("../models/content.model");
 const Course = require("../models/course.model");
+const Game = require("../models/game.model");
 const Lesson = require("../models/lesson.model");
 const Message = require("../models/message.model");
 const News = require("../models/news.model");
 const Notification = require("../models/notification.model");
 const UserCamp = require("../models/user.camp.model");
+const UserGame = require("../models/user.game.model");
 const UserChat = require("../models/user.chat.model");
 const User = require("../models/user.model");
 
@@ -18,7 +20,7 @@ const generateAddress = () => {
   return `${faker.address.streetAddress()}, ${faker.address.zipCode()}, ${faker.address.city()}, ${faker.address.country()}`;
 };
 
-const getRandomElementsArr = (arr, maxItems) => {
+const getRandomElements = (arr, maxItems) => {
   const results = [];
 
   for (let index = 0; index < maxItems; index++) {
@@ -89,9 +91,9 @@ const createUser = (tutorId) => {
 };
 
 const createTutors = () => {
-  const tutorArr = [];
+  const tutor = [];
   for (let index = 0; index < 13; index++) {
-    tutorArr.push(
+    tutor.push(
       createUser("")
         .then((user) => {
           return user._id;
@@ -99,7 +101,7 @@ const createTutors = () => {
         .catch()
     );
   }
-  return Promise.all(tutorArr);
+  return Promise.all(tutor);
 };
 
 const createMonitor = () => {
@@ -151,59 +153,61 @@ const createCamp = () => {
     edition: "I",
     description: faker.lorem.paragraph(),
     image: faker.image.imageUrl(),
-    dateStart: date.setDate(date.getDate() + 20),
-    dateEnd: date.setDate(date.getDate() + 10),
+    startDate: date.setDate(date.getDate() + 20),
+    endDate: date.setDate(date.getDate() + 10),
   });
 
   return camp.save();
 };
 
 const createCourses = (monitorId, campId) => {
-  const coursesArr = [];
+  const courses = [];
   for (let target = 12; target <= 18; target++) {
     const course = new Course({
       name: faker.company.companyName(),
       edition: "2020",
       description: faker.lorem.paragraph(),
+      image: faker.image.imageUrl(),
       campId: campId,
       target,
       monitorId: monitorId,
     });
-    coursesArr.push(
+    courses.push(
       course
         .save()
         .then(async (course) => {
           const { id } = course;
-          await createAttachment(id);
-          await createNews(id);
+          await createAttachment(course.id, "Course");
+          await createNews(course.id, "Course");
           return id;
         })
         .catch()
     );
   }
-  return Promise.all(coursesArr);
+  return Promise.all(courses);
 };
 
-const createLessons = async (monitorId, campStart, coursesArr) => {
-  const lessonsArr = [];
+const createLessons = async (monitorId, campStart, courses) => {
+  const lessons = [];
   let start = new Date(campStart);
-  for (let z = 0; z <= coursesArr.length; z++) {
+  for (let z = 0; z < courses.length; z++) {
     for (let index = 0; index < 10; index++) {
       const lesson = new Lesson({
         name: faker.lorem.sentence(),
         description: faker.lorem.paragraph(),
         image: faker.image.imageUrl(),
         content: faker.lorem.paragraphs(),
-        dateStart: new Date(start.setDate(campStart.getDate() + index)),
-        courseId: coursesArr[z],
+        startDate: new Date(start.setDate(campStart.getDate() + index)),
+        courseId: courses[z],
         monitorId,
       });
-      lessonsArr.push(
+      lessons.push(
         lesson
           .save()
-          .then((lesson) => {
+          .then(async (lesson) => {
             for (let index = 0; index < Math.floor(Math.random(3)); index++) {
-              createAttachment(lesson._id);
+              await createAttachment(lesson.id, "Lesson");
+              await createNews(id, "Lesson");
             }
             return lesson._id;
           })
@@ -211,38 +215,38 @@ const createLessons = async (monitorId, campStart, coursesArr) => {
       );
     }
   }
-  return Promise.all(lessonsArr);
+  return Promise.all(lessons);
 };
 
-const createContents = async (monitorId, coursesArr) => {
-  const contentsArr = [];
+const createContents = async (monitorId, courses) => {
+  const contents = [];
   const contentTypes = ["comic", "memes"];
-  for (let z = 0; z <= coursesArr.length; z++) {
-    for (let m = 0; m <= contentTypes.length; m++) {
-      for (let index = 0; index < 4; index++) {
+  for (let z = 0; z < courses.length; z++) {
+    for (let m = 0; m < contentTypes.length; m++) {
+      for (let index = 0; index < 2; index++) {
+        const num = Math.random() >= 0.5 ? 1 : 0;
         const content = new Content({
           name: faker.lorem.sentence(),
           description: faker.lorem.paragraph(),
           image: faker.image.imageUrl(),
-          type: coursesArr[m],
-          courseId: coursesArr[z],
+          type: contentTypes[num],
+          courseId: courses[z],
           monitorId,
         });
-        contentsArr.push(
+        contents.push(
           content
             .save()
-            .then((content) => {
-              for (let index = 0; index < Math.floor(Math.random(3)); index++) {
-                createAttachment(content._id);
-              }
-              return content._id;
+            .then(async (content) => {
+              await createAttachment(content.id, "Content");
+              await createNews(content.id, "Content");
+              return content.id;
             })
             .catch()
         );
       }
     }
   }
-  return Promise.all(contentsArr);
+  return Promise.all(contents);
 };
 
 const createUserCamp = async (campers, campId) => {
@@ -255,29 +259,59 @@ const createUserCamp = async (campers, campId) => {
   });
 };
 
-const createAttachment = (parentId) => {
+const createAttachment = (parentId, parentModel) => {
   const attachment = new Attachment({
     name: faker.random.words(),
     description: faker.lorem.paragraph(),
     type: faker.system.fileType(),
-    url: faker.system.filePath(),
+    url: faker.random.image(),
     parentId,
+    onModel: parentModel,
   });
   return attachment.save();
 };
 
-const createNews = (parentId) => {
+const createGames = async (lessons, monitorId) => {
+  const games = [];
+  const contentTypes = ["videogame", "trivia", "couples", "diferences"];
+  for (let i = 0; i < lessons.length; i++) {
+    const game = new Game({
+      name: faker.random.words(),
+      description: faker.lorem.paragraph(),
+      image: faker.random.image(),
+      type: contentTypes[Math.floor(Math.random() * contentTypes.length)],
+      url: faker.internet.url(),
+      lessonId: lessons[i],
+      monitorId,
+    });
+    games.push(
+      game
+        .save()
+        .then(async (game) => {
+          await createAttachment(game.id, "Game");
+          await createNews(game.id, "Game");
+          return game.id;
+        })
+        .catch()
+    );
+  }
+  return Promise.all(games);
+};
+
+const createNews = (parentId, parentModel) => {
   const news = new News({
-    title: faker.lorem.words(),
+    name: faker.lorem.words(),
     subtitle: faker.lorem.sentence(),
     image: faker.image.imageUrl(),
     content: faker.lorem.paragraphs(),
     parentId,
+    onModel: parentModel,
   });
   return news.save();
 };
 
 const createChat = async (campers, monitorId) => {
+  campers.push(monitorId);
   await campers.map((userId) => {
     const chat = new Chat({
       name: faker.lorem.words(),
@@ -288,7 +322,7 @@ const createChat = async (campers, monitorId) => {
     chat
       .save()
       .then((chat) => {
-        const participants = getRandomElementsArr(
+        const participants = getRandomElements(
           campers.filter((uId) => uId !== userId),
           Math.floor(Math.random() * campers.length)
         );
@@ -340,6 +374,8 @@ const restoreDatabase = () => {
     Content.deleteMany(),
     UserCamp.deleteMany(),
     Attachment.deleteMany(),
+    Game.deleteMany(),
+    UserGame.deleteMany(),
     News.deleteMany(),
     Notification.deleteMany(),
     Chat.deleteMany(),
@@ -348,7 +384,7 @@ const restoreDatabase = () => {
   ]);
 };
 
-const campersArr = [];
+const campers = [];
 const seeds = () => {
   restoreDatabase()
     .then(() => {
@@ -356,29 +392,33 @@ const seeds = () => {
         .then((monitor) => {
           createCamp()
             .then(async (camp) => {
-              createAttachment(camp._id);
+              createAttachment(camp._id, "Camp");
               createCourses(monitor.id, camp.id)
                 .then(async (courses) => {
-                  await createLessons(monitor.id, camp.dateStart, courses)
-                    .then(async () => {
-                      await createContents(monitor.id, courses)
+                  await createLessons(monitor.id, camp.startDate, courses)
+                    .then(async (lessons) => {
+                      await createGames(lessons, monitor.id)
                         .then(async () => {
-                          createTutors()
-                            .then(async (tutorsArr) => {
-                              for (
-                                let index = 0;
-                                index < tutorsArr.length;
-                                index++
-                              ) {
-                                await createUser(tutorsArr[index])
-                                  .then((camper) => {
-                                    campersArr.push(camper.id);
-                                  })
-                                  .catch((err) => console.log(err));
-                              }
-                              await createChat(campersArr, monitor.id);
-                              await createUserCamp(campersArr, camp.id);
-                              console.log("Yarl");
+                          await createContents(monitor.id, courses)
+                            .then(async () => {
+                              createTutors()
+                                .then(async (tutors) => {
+                                  for (
+                                    let index = 0;
+                                    index < tutors.length;
+                                    index++
+                                  ) {
+                                    await createUser(tutors[index])
+                                      .then((camper) => {
+                                        campers.push(camper.id);
+                                      })
+                                      .catch((err) => console.log(err));
+                                  }
+                                  await createChat(campers, monitor.id);
+                                  await createUserCamp(campers, camp.id);
+                                  console.log("Yarl");
+                                })
+                                .catch((err) => console.log(err));
                             })
                             .catch((err) => console.log(err));
                         })

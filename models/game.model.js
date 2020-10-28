@@ -17,6 +17,7 @@ const gameSchema = new mongoose.Schema(
     type: {
       type: String,
       trim: true,
+      enum: ["videogame", "trivia", "couples", "diferences"],
     },
     url: {
       type: String,

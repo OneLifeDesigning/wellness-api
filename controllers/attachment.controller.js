@@ -2,6 +2,7 @@ const Attachment = require("../models/attachment.model");
 
 module.exports.all = (req, res, next) => {
   Attachment.find({})
+    .populate("parentId")
     .then((attachments) => res.status(200).json(attachments))
     .catch(next);
 };
@@ -35,7 +36,10 @@ module.exports.edit = (req, res, next) => {
     req.body.image = req.file.url;
   }
 
-  Attachment.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Attachment.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((attachment) => res.status(200).json(attachment))
     .catch(next);
 };

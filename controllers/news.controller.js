@@ -2,6 +2,7 @@ const News = require("../models/news.model");
 
 module.exports.all = (req, res, next) => {
   News.find({})
+    .populate("parentId")
     .then((news) => res.status(200).json(news))
     .catch(next);
 };
@@ -24,8 +25,9 @@ module.exports.new = (req, res, next) => {
 module.exports.show = (req, res, next) => {
   News.findById(req.params.id)
     .then((news) => {
-      console.log(news)
-      res.status(200).json(news)})
+      console.log(news);
+      res.status(200).json(news);
+    })
     .catch(next);
 };
 
@@ -34,7 +36,10 @@ module.exports.edit = (req, res, next) => {
     req.body.image = req.file.url;
   }
 
-  News.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  News.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((news) => res.status(200).json(news))
     .catch(next);
 };

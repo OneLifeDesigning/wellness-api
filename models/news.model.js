@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const newsSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: [true, "Title is required"],
       minlength: [6, "Title needs at last 6 chars"],
@@ -21,7 +21,13 @@ const newsSchema = new mongoose.Schema(
     },
     parentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      required: true,
+      refPath: "onModel",
+    },
+    onModel: {
+      type: String,
+      required: true,
+      enum: ["Camp", "Course", "Lesson", "Game", "News", "Content"],
     },
   },
   {

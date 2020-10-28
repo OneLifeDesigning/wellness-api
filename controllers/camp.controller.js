@@ -4,6 +4,10 @@ const User = require("../models/user.model");
 
 module.exports.all = (req, res, next) => {
   Camp.find({})
+    .populate({
+      path: "courses",
+      model: "Course",
+    })
     .then((camps) => res.status(200).json(camps))
     .catch(next);
 };
@@ -39,14 +43,15 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-  Camp.findByIdAndUpdate(id, req.body, { new: true })
+  Camp.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
     .then((camp) => res.status(200).json(camp))
     .catch(next);
 };
 module.exports.enroll = (req, res, next) => {
   const campId = req.params.id;
   const userId = req.params.user;
-
+  console.log(req.currentUser.id);
+  console.log(req.params.user);
   User.find({ tutorId: req.currentUser.id })
     .then((campers) => {
       campers.some((camper) => camper.id === userId)

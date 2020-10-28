@@ -3,6 +3,7 @@ const User = require("../models/user.model");
 
 module.exports.all = (req, res, next) => {
   User.find({})
+    .populate("tutorId")
     .then((users) => res.status(200).json(users))
     .catch(next);
 };
@@ -28,6 +29,7 @@ module.exports.newCamper = (req, res, next) => {
 
   user
     .save()
+    .populate("tutorId")
     .then((user) => res.status(201).json(user))
     .catch(next);
 };
@@ -69,7 +71,7 @@ module.exports.login = (req, res, next) => {
   if (!username && !password) {
     throw createError(400, "Missing credentials");
   }
-  User.findOne({ username: username })
+  User.findOne({ username })
     .then((user) => {
       if (!user) {
         throw createError(404, "Missing credentials");
@@ -95,6 +97,7 @@ module.exports.profile = (req, res, next) => {
     throw createError(403, "Only view your profile");
   }
   User.findById(req.params.id)
+    .populate("tutorId")
     .populate({
       path: "campers",
       model: "User",
@@ -168,6 +171,7 @@ module.exports.edit = (req, res, next) => {
     req.body.image = req.file.url;
   }
   User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
+    .populate("tutorId")
     .then((user) => res.status(200).json(user))
     .catch(next);
 };
