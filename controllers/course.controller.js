@@ -74,7 +74,21 @@ module.exports.enroll = (req, res, next) => {
                 const userCourse = new UserCourse({ courseId, userId });
                 userCourse
                   .save()
-                  .then(() => res.status(201).json())
+                  .then(() => {
+                    User.findById(enrolled.userId)
+                      .populate({
+                        path: "courses",
+                        model: "UserCourse",
+                        populate: {
+                          path: "course",
+                          model: "Course",
+                        },
+                      })
+                      .then((camper) => {
+                        res.status(201).json(camper);
+                      })
+                      .catch(next);
+                  })
                   .catch(next);
               }
             })

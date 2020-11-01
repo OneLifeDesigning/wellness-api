@@ -18,18 +18,20 @@ module.exports.newTutor = (req, res, next) => {
 
   user
     .save()
-    .then((user) => res.status(201).json(user))
+    .then((user) => {
+      req.session.user = user;
+      res.status(201).json(user);
+    })
     .catch(next);
 };
 
 module.exports.newCamper = (req, res, next) => {
   const user = new User(req.body);
   user.role = "camper";
-  user.turtorId = req.currentUser.id;
+  user.tutorId = req.currentUser.id;
 
   user
     .save()
-    .populate("tutorId")
     .then((user) => res.status(201).json(user))
     .catch(next);
 };
@@ -72,6 +74,7 @@ module.exports.login = (req, res, next) => {
     throw createError(400, "Missing credentials");
   }
   User.findOne({ username })
+    .populate("tutorId")
     .then((user) => {
       if (!user) {
         throw createError(404, "Missing credentials");
@@ -97,47 +100,38 @@ module.exports.profile = (req, res, next) => {
     throw createError(403, "Only view your profile");
   }
   User.findById(req.params.id)
-    .populate("tutorId")
-    .populate({
-      path: "campers",
-      model: "User",
+    .populate("campers")
+    .then((user) => {
+      res.status(200).json(user);
     })
-    .populate({
-      path: "camps",
-      model: "UserCamp",
-      populate: {
-        path: "camps",
-        model: "Camp",
-      },
-    })
-    .populate({
-      path: "courses",
-      model: "UserCourse",
-      populate: {
-        path: "courses",
-        model: "Course",
-      },
-    })
-    .populate({
-      path: "lessons",
-      model: "UserLesson",
-      populate: {
-        path: "lessons",
-        model: "Lesson",
-      },
-    })
-    .then((user) => res.status(200).json(user))
     .catch(next);
 };
+
+module.exports.getCampers = (req, res, next) => {
+  if (
+    req.currentUser.role !== "admin" &&
+    req.params.id !== req.currentUser.id
+  ) {
+    throw createError(403, "Only view your profile");
+  }
+
+  User.find({ tutorId: req.currentUser.id })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch(next);
+};
+
 module.exports.tutorize = (req, res, next) => {
   User.find({
     $and: [{ tutorId: req.currentUser.id }, { _id: req.params.id }],
   })
+    .populate("tutorId")
     .populate({
       path: "camps",
       model: "UserCamp",
       populate: {
-        path: "camps",
+        path: "camp",
         model: "Camp",
       },
     })
@@ -145,19 +139,14 @@ module.exports.tutorize = (req, res, next) => {
       path: "courses",
       model: "UserCourse",
       populate: {
-        path: "courses",
+        path: "course",
         model: "Course",
       },
     })
-    .populate({
-      path: "lessons",
-      model: "UserLesson",
-      populate: {
-        path: "lessons",
-        model: "Lesson",
-      },
-    })
+    .populate("lessons")
+    .populate("games")
     .then((camper) => {
+      console.log(camper);
       res.status(200).json(camper);
     })
     .catch(next);

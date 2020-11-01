@@ -18,14 +18,14 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Username is required"],
+      required: [true, "Usuario es requerido"],
       unique: true,
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
-      minlength: [8, "Password needs at last 8 chars"],
+      required: [true, "Contraseña es requerida"],
+      minlength: [6, "Contraseña debe ser mayor de 6 caractéres"],
     },
     tutorId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,35 +33,34 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      unique: true,
-      trim: true,
       lowercase: true,
-      match: [EMAIL_PATTERN, "Email is invalid"],
+      match: [EMAIL_PATTERN, "Email no es válido"],
+      trim: true,
     },
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "Nombre es requerido"],
       minlength: [2, "Name needs at last 3 chars"],
       trim: true,
     },
     lastname: {
       type: String,
       required: [true, "Name is required"],
-      minlength: [2, "Name needs at last 3 chars"],
+      minlength: [2, "Nombre debe ser mayor de 3 caractéres"],
       trim: true,
     },
     phone: {
       type: String,
-      minlength: [9, "Phone needs at last 9 chars"],
+      minlength: [9, "Teléfono debe ser mayor de 9 caractéres"],
       trim: true,
     },
     birthday: {
       type: Date,
-      required: [true, "Birthday is required"],
+      required: [true, "Nacimiento  es requerido"],
     },
     address: {
       type: String,
-      minlength: [10, "Address needs at last 3 chars"],
+      minlength: [10, "Dirección debe ser mayor de 3 caractéres"],
     },
     role: {
       type: String,
@@ -70,7 +69,7 @@ const userSchema = new mongoose.Schema(
     },
     terms: {
       type: Boolean,
-      required: [true, "Terms are required"],
+      required: [true, "Debés aceptar los términos y condiciones"],
     },
     avatar: {
       type: String,
@@ -98,6 +97,7 @@ const userSchema = new mongoose.Schema(
         return ret;
       },
     },
+    toObject: { virtuals: true },
   }
 );
 
@@ -113,8 +113,20 @@ userSchema.virtual("camps", {
   foreignField: "userId",
 });
 
+userSchema.virtual("courses", {
+  ref: "UserCourse",
+  localField: "_id",
+  foreignField: "userId",
+});
+
 userSchema.virtual("lessons", {
   ref: "UserLesson",
+  localField: "_id",
+  foreignField: "userId",
+});
+
+userSchema.virtual("games", {
+  ref: "UserGame",
   localField: "_id",
   foreignField: "userId",
 });

@@ -25,7 +25,7 @@ const userCourseSchema = new mongoose.Schema(
   }
 );
 
-userCourseSchema.virtual("courses", {
+userCourseSchema.virtual("course", {
   ref: "Course",
   localField: "courseId",
   foreignField: "_id",

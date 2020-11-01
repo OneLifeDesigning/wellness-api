@@ -25,7 +25,7 @@ const userCampSchema = new mongoose.Schema(
   }
 );
 
-userCampSchema.virtual("camps", {
+userCampSchema.virtual("camp", {
   ref: "Camp",
   localField: "campId",
   foreignField: "_id",

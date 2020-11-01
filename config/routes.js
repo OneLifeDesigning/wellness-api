@@ -29,6 +29,12 @@ router.get(
   userController.profile
 );
 router.get(
+  "/users/:id/campers",
+  authMiddleware.isAuthenticated,
+  userController.getCampers
+);
+
+router.get(
   "/users/:id/tutorize",
   authMiddleware.isAuthenticated,
   userController.tutorize
@@ -92,6 +98,8 @@ router.delete(
   authMiddleware.isAdmin,
   campController.delete
 );
+
+router.get("/camps/:id/courses", campController.campCourses);
 
 router.post(
   "/camps/:id/enroll/:user",

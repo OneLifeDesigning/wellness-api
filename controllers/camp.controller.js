@@ -25,8 +25,7 @@ module.exports.new = (req, res, next) => {
 };
 
 module.exports.show = (req, res, next) => {
-  const { id } = req.params;
-  Camp.findById(id)
+  Camp.findById(req.params.id)
     .populate({
       path: "courses",
       model: "Course",
@@ -38,6 +37,16 @@ module.exports.show = (req, res, next) => {
     .then((camp) => res.status(200).json(camp))
     .catch(next);
 };
+module.exports.campCourses = (req, res, next) => {
+  Camp.findById(req.params.id)
+    .populate({
+      path: "courses",
+      model: "Course",
+    })
+    .then((camp) => res.status(200).json(camp.courses))
+    .catch(next);
+};
+
 module.exports.edit = (req, res, next) => {
   const { id } = req.params;
   if (req.file) {
@@ -47,23 +56,36 @@ module.exports.edit = (req, res, next) => {
     .then((camp) => res.status(200).json(camp))
     .catch(next);
 };
+
 module.exports.enroll = (req, res, next) => {
   const campId = req.params.id;
   const userId = req.params.user;
-  console.log(req.currentUser.id);
-  console.log(req.params.user);
   User.find({ tutorId: req.currentUser.id })
     .then((campers) => {
       campers.some((camper) => camper.id === userId)
         ? UserCamp.findOne({ campId, userId })
             .then((isEnrolled) => {
               if (isEnrolled) {
-                res.status(204).json();
+                res.status(204).json(isEnrolled.userId);
               } else {
                 const userCamp = new UserCamp({ campId, userId });
                 userCamp
                   .save()
-                  .then(() => res.status(201).json())
+                  .then((enrolled) => {
+                    User.findById(enrolled.userId)
+                      .populate({
+                        path: "camps",
+                        model: "UserCamp",
+                        populate: {
+                          path: "camp",
+                          model: "Camp",
+                        },
+                      })
+                      .then((camper) => {
+                        res.status(201).json(camper);
+                      })
+                      .catch(next);
+                  })
                   .catch(next);
               }
             })
