@@ -130,6 +130,11 @@ userSchema.virtual("games", {
   localField: "_id",
   foreignField: "userId",
 });
+userSchema.virtual("participants", {
+  ref: "UserChats",
+  localField: "_id",
+  foreignField: "userId",
+});
 
 userSchema.pre("save", function (next) {
   const user = this;

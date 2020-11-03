@@ -55,6 +55,12 @@ courseSchema.virtual("campers", {
   foreignField: "courseId",
 });
 
+courseSchema.virtual("monitor", {
+  ref: "User",
+  localField: "monitorId",
+  foreignField: "_id",
+});
+
 const Course = mongoose.model("Course", courseSchema);
 
 module.exports = Course;

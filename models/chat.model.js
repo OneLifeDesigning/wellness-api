@@ -4,6 +4,7 @@ const chatSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
       trim: true,
     },
     slogan: {
@@ -35,16 +36,10 @@ const chatSchema = new mongoose.Schema(
   }
 );
 
-chatSchema.virtual("messages", {
-  ref: "Message",
-  localField: "_id",
-  foreignField: "chatId",
-});
-
 chatSchema.virtual("participants", {
   ref: "UserChat",
-  localField: "_id",
-  foreignField: "chatId",
+  localField: "userId",
+  foreignField: "_id",
 });
 
 const Chat = mongoose.model("Chat", chatSchema);

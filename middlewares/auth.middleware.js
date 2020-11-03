@@ -19,6 +19,7 @@ module.exports.isAuthtorized = (req, _, next) => {
     next(createError(403));
   }
 };
+
 module.exports.isAdmin = (req, _, next) => {
   if (req.session.user && req.session.user.role === "admin") {
     next();
@@ -29,6 +30,7 @@ module.exports.isAdmin = (req, _, next) => {
 
 module.exports.isNotAuthenticated = (req, _, next) => {
   if (req.session.user) {
+    console.log(req.session.user);
     next(createError(403));
   } else {
     next();

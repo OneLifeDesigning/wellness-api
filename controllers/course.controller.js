@@ -74,8 +74,16 @@ module.exports.enroll = (req, res, next) => {
                 const userCourse = new UserCourse({ courseId, userId });
                 userCourse
                   .save()
-                  .then(() => {
-                    User.findById(enrolled.userId)
+                  .then((userCourseEnrolled) => {
+                    User.findById(userCourseEnrolled.userId)
+                      .populate({
+                        path: "camps",
+                        model: "UserCamp",
+                        populate: {
+                          path: "camp",
+                          model: "Camp",
+                        },
+                      })
                       .populate({
                         path: "courses",
                         model: "UserCourse",
@@ -92,11 +100,12 @@ module.exports.enroll = (req, res, next) => {
                   .catch(next);
               }
             })
-            .catch(() => {})
+            .catch(next)
         : next();
     })
     .catch(next);
 };
+
 module.exports.disenroll = (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.params.user;

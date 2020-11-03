@@ -24,7 +24,11 @@ const userChatSchema = new mongoose.Schema(
     },
   }
 );
-
+// userChatSchema.virtual("participants", {
+//   ref: "User",
+//   localField: "userId",
+//   foreignField: "_id",
+// });
 const UserChat = mongoose.model("UserChat", userChatSchema);
 
 module.exports = UserChat;

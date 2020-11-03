@@ -12,8 +12,10 @@ const Message = require("../models/message.model");
 const News = require("../models/news.model");
 const Notification = require("../models/notification.model");
 const UserCamp = require("../models/user.camp.model");
-const UserGame = require("../models/user.game.model");
 const UserChat = require("../models/user.chat.model");
+const UserCourse = require("../models/user.course.model");
+const UserGame = require("../models/user.game.model");
+const UserLesson = require("../models/user.lesson.model");
 const User = require("../models/user.model");
 
 const generateAddress = () => {
@@ -153,8 +155,8 @@ const createCamp = () => {
     edition: "I",
     description: faker.lorem.paragraph(),
     image: faker.image.imageUrl(),
-    startDate: date.setDate(date.getDate() + 20),
-    endDate: date.setDate(date.getDate() + 10),
+    startDate: date.setDate(date.getDate() + 5),
+    endDate: date.setDate(date.getDate() + 15),
   });
 
   return camp.save();
@@ -348,11 +350,7 @@ const createChat = async (campers, monitorId) => {
                   message
                     .save()
                     .then((msg) => {
-                      console.log(
-                        `Msg crreated ${msg.text} in ${Math.floor(
-                          Math.random(1000) * 10
-                        )}`
-                      );
+                      console.log(`Msg created ${msg.text}`);
                     })
                     .catch();
                 }, Math.floor(Math.random(1000) * 1000));
@@ -373,9 +371,12 @@ const restoreDatabase = () => {
     Lesson.deleteMany(),
     Content.deleteMany(),
     UserCamp.deleteMany(),
+    UserCourse.deleteMany(),
+    UserChat.deleteMany(),
+    UserGame.deleteMany(),
+    UserLesson.deleteMany(),
     Attachment.deleteMany(),
     Game.deleteMany(),
-    UserGame.deleteMany(),
     News.deleteMany(),
     Notification.deleteMany(),
     Chat.deleteMany(),

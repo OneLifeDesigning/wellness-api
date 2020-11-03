@@ -60,6 +60,7 @@ module.exports.edit = (req, res, next) => {
 module.exports.enroll = (req, res, next) => {
   const campId = req.params.id;
   const userId = req.params.user;
+
   User.find({ tutorId: req.currentUser.id })
     .then((campers) => {
       campers.some((camper) => camper.id === userId)
@@ -71,8 +72,8 @@ module.exports.enroll = (req, res, next) => {
                 const userCamp = new UserCamp({ campId, userId });
                 userCamp
                   .save()
-                  .then((enrolled) => {
-                    User.findById(enrolled.userId)
+                  .then((userCampEnrolled) => {
+                    User.findById(userCampEnrolled.userId)
                       .populate({
                         path: "camps",
                         model: "UserCamp",
@@ -89,7 +90,7 @@ module.exports.enroll = (req, res, next) => {
                   .catch(next);
               }
             })
-            .catch(() => {})
+            .catch(next)
         : next();
     })
     .catch(next);

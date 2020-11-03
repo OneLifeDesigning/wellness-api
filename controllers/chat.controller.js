@@ -31,18 +31,18 @@ const deleteParticipantsToChat = (chatId, participantsArr) => {
 };
 
 module.exports.all = (req, res, next) => {
-  UserChat.find({ userId: req.currentUser.id })
+  Chat.find({ userId: req.currentUser.id })
     .then((chats) => res.status(200).json(chats))
     .catch(next);
 };
 
 module.exports.show = (req, res, next) => {
   Chat.findById(req.params.id)
-    .populate("messages")
     .populate({
       path: "participants",
-      options: { select: { userId: 1 } },
+      model: "User",
     })
+    .populate("messages")
     .then((chat) => res.status(200).json(chat))
     .catch(next);
 };
@@ -53,7 +53,7 @@ module.exports.new = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
-
+  req.body.participants = [...req.body.participants, req.currentUser.id];
   const chat = new Chat(req.body);
 
   chat

@@ -152,6 +152,7 @@ router.delete(
 // Lessons
 router.get("/lessons", lessonController.all);
 router.get("/lessons/:id", lessonController.show);
+
 router.post(
   "/lessons/new",
   authMiddleware.isAuthenticated,

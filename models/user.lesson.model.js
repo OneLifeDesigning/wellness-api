@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Lesson = require("../models/lesson.model");
+const Notification = require("../models/notification.model");
 
 const userLessonSchema = new mongoose.Schema(
   {
@@ -41,7 +42,7 @@ userLessonSchema.pre("save", function (next) {
     .catch((err) => next(err));
 });
 
-userLessonSchema.virtual("lessons", {
+userLessonSchema.virtual("lesson", {
   ref: "Lesson",
   localField: "lessonId",
   foreignField: "_id",

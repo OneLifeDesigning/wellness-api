@@ -9,7 +9,6 @@ module.exports.all = (req, res, next) => {
 };
 
 module.exports.newTutor = (req, res, next) => {
-  console.log(req.body);
   if (!req.body.email) {
     throw createError(400, "Email is required");
   }
@@ -116,6 +115,39 @@ module.exports.getCampers = (req, res, next) => {
   }
 
   User.find({ tutorId: req.currentUser.id })
+    .populate("tutorId")
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "camp",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "course",
+        model: "Course",
+        populate: {
+          path: "monitor",
+          model: "User",
+        },
+      },
+    })
+    .populate({
+      path: "lessons",
+      model: "UserLesson",
+    })
+    .populate({
+      path: "games",
+      model: "UserGame",
+      populate: {
+        path: "game",
+        model: "Game",
+      },
+    })
     .then((user) => {
       res.status(200).json(user);
     })
@@ -143,8 +175,18 @@ module.exports.tutorize = (req, res, next) => {
         model: "Course",
       },
     })
-    .populate("lessons")
-    .populate("games")
+    .populate({
+      path: "lessons",
+      model: "UserLesson",
+    })
+    .populate({
+      path: "games",
+      model: "UserGame",
+      populate: {
+        path: "game",
+        model: "Game",
+      },
+    })
     .then((camper) => {
       console.log(camper);
       res.status(200).json(camper);
