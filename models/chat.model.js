@@ -35,11 +35,16 @@ const chatSchema = new mongoose.Schema(
     },
   }
 );
-
 chatSchema.virtual("participants", {
   ref: "UserChat",
-  localField: "userId",
-  foreignField: "_id",
+  localField: "_id",
+  foreignField: "chatId",
+});
+
+chatSchema.virtual("messages", {
+  ref: "Message",
+  localField: "_id",
+  foreignField: "chatId",
 });
 
 const Chat = mongoose.model("Chat", chatSchema);

@@ -74,6 +74,43 @@ module.exports.login = (req, res, next) => {
   }
   User.findOne({ username })
     .populate("tutorId")
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "campId",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "course",
+        model: "Course",
+        populate: {
+          path: "monitor",
+          model: "User",
+        },
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+          populate: {
+            path: "monitorId",
+            model: "User",
+          },
+          populate: {
+            path: "games",
+            model: "Game",
+            populate: {
+              path: "monitorId",
+              model: "User",
+            },
+          },
+        },
+      },
+    })
+    .populate("campers")
     .then((user) => {
       if (!user) {
         throw createError(404, "Missing credentials");
@@ -99,6 +136,43 @@ module.exports.profile = (req, res, next) => {
     throw createError(403, "Only view your profile");
   }
   User.findById(req.params.id)
+    .populate("tutorId")
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "campId",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "course",
+        model: "Course",
+        populate: {
+          path: "monitor",
+          model: "User",
+        },
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+          populate: {
+            path: "monitorId",
+            model: "User",
+          },
+          populate: {
+            path: "games",
+            model: "Game",
+            populate: {
+              path: "monitorId",
+              model: "User",
+            },
+          },
+        },
+      },
+    })
     .populate("campers")
     .then((user) => {
       res.status(200).json(user);
@@ -148,6 +222,7 @@ module.exports.getCampers = (req, res, next) => {
         model: "Game",
       },
     })
+    .populate("campers")
     .then((user) => {
       res.status(200).json(user);
     })
@@ -163,7 +238,7 @@ module.exports.tutorize = (req, res, next) => {
       path: "camps",
       model: "UserCamp",
       populate: {
-        path: "camp",
+        path: "campId",
         model: "Camp",
       },
     })
@@ -173,18 +248,26 @@ module.exports.tutorize = (req, res, next) => {
       populate: {
         path: "course",
         model: "Course",
-      },
-    })
-    .populate({
-      path: "lessons",
-      model: "UserLesson",
-    })
-    .populate({
-      path: "games",
-      model: "UserGame",
-      populate: {
-        path: "game",
-        model: "Game",
+        populate: {
+          path: "monitor",
+          model: "User",
+        },
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+          populate: {
+            path: "monitorId",
+            model: "User",
+          },
+          populate: {
+            path: "games",
+            model: "Game",
+            populate: {
+              path: "monitorId",
+              model: "User",
+            },
+          },
+        },
       },
     })
     .then((camper) => {
@@ -201,8 +284,45 @@ module.exports.edit = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
+
   User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
     .populate("tutorId")
+    .populate({
+      path: "camps",
+      model: "UserCamp",
+      populate: {
+        path: "campId",
+        model: "Camp",
+      },
+    })
+    .populate({
+      path: "courses",
+      model: "UserCourse",
+      populate: {
+        path: "course",
+        model: "Course",
+        populate: {
+          path: "monitor",
+          model: "User",
+        },
+        populate: {
+          path: "lessons",
+          model: "Lesson",
+          populate: {
+            path: "monitorId",
+            model: "User",
+          },
+          populate: {
+            path: "games",
+            model: "Game",
+            populate: {
+              path: "monitorId",
+              model: "User",
+            },
+          },
+        },
+      },
+    })
     .then((user) => res.status(200).json(user))
     .catch(next);
 };

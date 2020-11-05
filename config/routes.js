@@ -40,12 +40,7 @@ router.get(
   userController.tutorize
 );
 
-router.patch(
-  "/users/:id",
-  authMiddleware.isAuthenticated,
-  upload.single("avatar"),
-  userController.edit
-);
+router.patch("/users/:id", authMiddleware.isAuthenticated, userController.edit);
 
 router.post(
   "/users/newTutor",
@@ -76,8 +71,8 @@ router.post("/login", authMiddleware.isNotAuthenticated, userController.login);
 router.post("/logout", authMiddleware.isAuthenticated, userController.logout);
 
 // Camps
-router.get("/camps", campController.all);
-router.get("/camps/:id", campController.show);
+router.get("/camps", authMiddleware.isAuthenticated, campController.all);
+router.get("/camps/:id", authMiddleware.isAuthenticated, campController.show);
 router.post(
   "/camps/new",
   authMiddleware.isAuthenticated,
@@ -99,7 +94,11 @@ router.delete(
   campController.delete
 );
 
-router.get("/camps/:id/courses", campController.campCourses);
+router.get(
+  "/camps/:id/courses",
+  authMiddleware.isAuthenticated,
+  campController.campCourses
+);
 
 router.post(
   "/camps/:id/enroll/:user",
@@ -150,8 +149,12 @@ router.delete(
 );
 
 // Lessons
-router.get("/lessons", lessonController.all);
-router.get("/lessons/:id", lessonController.show);
+router.get("/lessons", authMiddleware.isAuthenticated, lessonController.all);
+router.get(
+  "/lessons/:id",
+  authMiddleware.isAuthenticated,
+  lessonController.show
+);
 
 router.post(
   "/lessons/new",
@@ -267,11 +270,25 @@ router.delete(
   gameController.delete
 );
 
+router.get(
+  "/games/:id/started",
+  authMiddleware.isAuthenticated,
+  gameController.isStarted
+);
 router.post(
   "/games/:id/start",
   authMiddleware.isAuthenticated,
   gameController.start
 );
+
+router.get(
+  "/games/find/:token",
+  authMiddleware.isAuthenticated,
+  gameController.findGame
+);
+
+router.post("/games/complete/", gameController.complete);
+router.post("/games/:id/complete/", gameController.complete);
 
 // News
 router.get("/news", newsController.all);
@@ -299,6 +316,7 @@ router.delete(
   authMiddleware.isAdmin,
   newsController.delete
 );
+
 // Chats
 router.get("/chats", authMiddleware.isAuthenticated, chatsController.all);
 router.get("/chats/:id", authMiddleware.isAuthenticated, chatsController.show);

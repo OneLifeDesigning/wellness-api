@@ -8,14 +8,14 @@ const addParticipantsToChat = (chatId, participantsArr) => {
     participantsArr.map((userId) => {
       UserChat.findOne({ userId, chatId })
         .then((found) => {
-          if (!found) {
-            const newParticipant = new UserChat({
-              userId,
-              chatId,
-            });
-
-            newParticipant.save().then().catch();
+          if (found) {
+            return;
           }
+          const newParticipant = new UserChat({
+            userId,
+            chatId,
+          });
+          newParticipant.save().then().catch();
         })
         .catch();
     })
@@ -40,9 +40,20 @@ module.exports.show = (req, res, next) => {
   Chat.findById(req.params.id)
     .populate({
       path: "participants",
-      model: "User",
+      model: "UserChat",
+      populate: {
+        path: "userId",
+        model: "User",
+      },
     })
-    .populate("messages")
+    .populate({
+      path: "messages",
+      model: "Message",
+      populate: {
+        path: "userId",
+        model: "User",
+      },
+    })
     .then((chat) => res.status(200).json(chat))
     .catch(next);
 };
@@ -53,13 +64,14 @@ module.exports.new = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.url;
   }
+
   req.body.participants = [...req.body.participants, req.currentUser.id];
   const chat = new Chat(req.body);
 
   chat
     .save()
-    .then((chat) => {
-      addParticipantsToChat(chat.id, req.body.participants)
+    .then(async (chat) => {
+      await addParticipantsToChat(chat.id, req.body.participants)
         .then(() => res.status(201).json(chat))
         .catch(next);
     })
@@ -75,7 +87,12 @@ module.exports.newMessage = (req, res, next) => {
   message
     .save()
     .then((message) => {
-      res.status(201).json(message);
+      Message.findById(message.id)
+        .populate("userId")
+        .then((msg) => {
+          res.status(201).json(msg);
+        })
+        .catch(next);
     })
     .catch(next);
 };

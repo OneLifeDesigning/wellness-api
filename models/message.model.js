@@ -58,12 +58,6 @@ messageSchema.virtual("attachment", {
   foreignField: "parentId",
 });
 
-messageSchema.virtual("user", {
-  ref: "User",
-  localField: "userId",
-  foreignField: "_id",
-});
-
 const Message = mongoose.model("Message", messageSchema);
 
 module.exports = Message;

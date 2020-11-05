@@ -130,8 +130,9 @@ userSchema.virtual("games", {
   localField: "_id",
   foreignField: "userId",
 });
+
 userSchema.virtual("participants", {
-  ref: "UserChats",
+  ref: "UserChat",
   localField: "_id",
   foreignField: "userId",
 });
@@ -139,7 +140,7 @@ userSchema.virtual("participants", {
 userSchema.pre("save", function (next) {
   const user = this;
 
-  if (user.isModified("password")) {
+  if (user.isModified("password") && user.password !== "") {
     bcrypt
       .genSalt(SALT_WORK_FACTOR)
       .then((salt) => {

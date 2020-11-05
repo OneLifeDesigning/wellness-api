@@ -25,6 +25,7 @@ module.exports.show = (req, res, next) => {
   Lesson.findById(id)
     .populate("courseId")
     .populate("monitorId")
+    .populate("games")
     .then((lesson) => res.status(200).json(lesson))
     .catch(next);
 };

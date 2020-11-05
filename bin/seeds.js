@@ -155,8 +155,8 @@ const createCamp = () => {
     edition: "I",
     description: faker.lorem.paragraph(),
     image: faker.image.imageUrl(),
-    startDate: date.setDate(date.getDate() + 5),
-    endDate: date.setDate(date.getDate() + 15),
+    startDate: date.setDate(date.getDate()),
+    endDate: date.setDate(date.getDate() + 10),
   });
 
   return camp.save();
@@ -198,7 +198,7 @@ const createLessons = async (monitorId, campStart, courses) => {
         name: faker.lorem.sentence(),
         description: faker.lorem.paragraph(),
         image: faker.image.imageUrl(),
-        content: faker.lorem.paragraphs(),
+        content: faker.lorem.paragraphs(4),
         startDate: new Date(start.setDate(campStart.getDate() + index)),
         courseId: courses[z],
         monitorId,
@@ -280,9 +280,10 @@ const createGames = async (lessons, monitorId) => {
     const game = new Game({
       name: faker.random.words(),
       description: faker.lorem.paragraph(),
-      image: faker.random.image(),
+      image: faker.image.imageUrl(),
       type: contentTypes[Math.floor(Math.random() * contentTypes.length)],
-      url: faker.internet.url(),
+      url:
+        "file:///Users/ajdc/Sites/ironhack/projects/gamecamp/games/r-type/index.html",
       lessonId: lessons[i],
       monitorId,
     });
@@ -386,8 +387,8 @@ const restoreDatabase = () => {
 };
 
 const campers = [];
-const seeds = () => {
-  restoreDatabase()
+const seeds = async () => {
+  await restoreDatabase()
     .then(() => {
       createMonitor()
         .then((monitor) => {

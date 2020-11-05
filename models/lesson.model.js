@@ -55,8 +55,14 @@ lessonSchema.virtual("campers", {
   foreignField: "lessonId",
 });
 
-lessonSchema.virtual("lesson", {
-  ref: "UserLesson",
+lessonSchema.virtual("lessons", {
+  ref: "Course",
+  localField: "courseId",
+  foreignField: "_id",
+});
+
+lessonSchema.virtual("games", {
+  ref: "Game",
   localField: "_id",
   foreignField: "lessonId",
 });

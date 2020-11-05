@@ -46,6 +46,12 @@ const gameSchema = new mongoose.Schema(
   }
 );
 
+gameSchema.virtual("games", {
+  ref: "Lesson",
+  localField: "lessonId",
+  foreignField: "_id",
+});
+
 gameSchema.virtual("scores", {
   ref: "UserGame",
   localField: "_id",

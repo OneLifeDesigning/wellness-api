@@ -59,6 +59,7 @@ module.exports.edit = (req, res, next) => {
     .then((course) => res.status(200).json(course))
     .catch(next);
 };
+
 module.exports.enroll = (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.params.user;
