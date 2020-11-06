@@ -14,6 +14,11 @@ const cors = require("./config/cors.config");
  * Configure express
  */
 const app = express();
+
+if (app.get("env") === "production") {
+  app.set("trust proxy", 1);
+}
+
 app.use(cors);
 app.use(logger("dev"));
 app.use(express.json());
@@ -26,9 +31,6 @@ app.use((req, _, next) => {
   next();
 });
 
-if (app.get("env") === "production") {
-  app.set("trust proxy", 1);
-}
 /**
  * Configure routes
  */
