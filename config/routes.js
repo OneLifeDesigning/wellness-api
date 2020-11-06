@@ -163,6 +163,11 @@ router.post(
   upload.single("image"),
   lessonController.new
 );
+router.get(
+  "/lessons/user/iscompleted",
+  authMiddleware.isAuthenticated,
+  lessonController.getCompletedLessons
+);
 router.patch(
   "/lessons/:id",
   authMiddleware.isAuthenticated,
@@ -171,7 +176,7 @@ router.patch(
   lessonController.edit
 );
 router.get(
-  "/lessons/:id/completed",
+  "/lessons/:id/iscompleted",
   authMiddleware.isAuthenticated,
   lessonController.isCompleted
 );
@@ -260,7 +265,11 @@ router.post(
   upload.single("file"),
   gameController.new
 );
-
+router.get(
+  "/games/user/iscompleted",
+  authMiddleware.isAuthenticated,
+  gameController.getCompletedGames
+);
 router.patch(
   "/games/:id",
   authMiddleware.isAuthenticated,
@@ -281,7 +290,7 @@ router.get(
   authMiddleware.isAuthenticated,
   gameController.isStarted
 );
-router.post(
+router.patch(
   "/games/:id/start",
   authMiddleware.isAuthenticated,
   gameController.start
@@ -294,11 +303,6 @@ router.get(
 );
 
 router.post(
-  "/games/completed",
-  authMiddleware.isAuthenticated,
-  gameController.complete
-);
-router.post(
   "/games/:id/completed",
   authMiddleware.isAuthenticated,
   gameController.complete
@@ -306,6 +310,7 @@ router.post(
 
 // News
 router.get("/news", newsController.all);
+router.get("/news/last", newsController.last);
 router.get("/news/:id", newsController.show);
 
 router.post(
@@ -333,6 +338,7 @@ router.delete(
 
 // Chats
 router.get("/chats", authMiddleware.isAuthenticated, chatsController.all);
+
 router.get("/chats/:id", authMiddleware.isAuthenticated, chatsController.show);
 
 router.patch(

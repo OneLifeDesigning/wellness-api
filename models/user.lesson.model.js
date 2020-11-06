@@ -32,11 +32,13 @@ const userLessonSchema = new mongoose.Schema(
 );
 
 userLessonSchema.pre("save", function (next) {
+  console.log(this.lessonId);
   Lesson.findById(this.lessonId)
     .then((lesson) => {
       const notification = new Notification({
         parentId: this.lessonId,
         userId: lesson.monitorId,
+        onModel: "Lesson",
       });
       notification
         .save()

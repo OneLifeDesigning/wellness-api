@@ -2,9 +2,10 @@ const Chat = require("../models/chat.model");
 const UserChat = require("../models/user.chat.model");
 const Message = require("../models/message.model");
 const Notification = require("../models/notification.model");
+
 const toUnique = (array, filter) => {
   if (!array.length) {
-    return [""];
+    return [];
   }
   const flags = [];
   const output = [];

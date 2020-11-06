@@ -59,6 +59,15 @@ module.exports.isStarted = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.getCompletedGames = (req, res, next) => {
+  const userId = req.currentUser.id;
+  UserGame.find({ userId })
+    .then((games) => {
+      res.status(201).json(games);
+    })
+    .catch(next);
+};
+
 module.exports.start = (req, res, next) => {
   const gameId = req.params.id;
   const userId = req.currentUser.id;
@@ -94,9 +103,10 @@ module.exports.start = (req, res, next) => {
 
 module.exports.complete = (req, res, next) => {
   const { rating, score, comment } = req.body;
+  const userId = req.currentUser.id;
 
   UserGame.findOneAndUpdate(
-    { id: req.params.id },
+    { gameId: req.params.id, userId },
     { rating, score, comment, isCompleted: true },
     { new: true, runValidators: true }
   )
@@ -106,6 +116,7 @@ module.exports.complete = (req, res, next) => {
 
 module.exports.findGame = (req, res, next) => {
   const token = req.params.token;
+
   UserGame.findOne({ token })
     .populate("gameId")
     .populate("userId")

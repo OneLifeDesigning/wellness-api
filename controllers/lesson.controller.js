@@ -43,21 +43,29 @@ module.exports.edit = (req, res, next) => {
 module.exports.isCompleted = (req, res, next) => {
   const lessonId = req.params.id;
   const userId = req.currentUser.id;
-
   UserLesson.findOne({ lessonId, userId })
     .then((lesson) => {
-      console.log(lesson);
       res.status(201).json(lesson);
+    })
+    .catch(next);
+};
+module.exports.getCompletedLessons = (req, res, next) => {
+  const userId = req.currentUser.id;
+  UserLesson.find({ userId })
+    .then((lessons) => {
+      res.status(201).json(lessons);
     })
     .catch(next);
 };
 module.exports.completed = (req, res, next) => {
   const lessonId = req.params.id;
   const userId = req.currentUser.id;
-  const userLesson = new UserLesson({ lessonId, userId });
+  const userLesson = new UserLesson({ lessonId, userId, isCompleted: true });
   userLesson
     .save()
-    .then(() => res.status(201).json())
+    .then((lesson) => {
+      res.status(201).json(lesson);
+    })
     .catch(next);
 };
 

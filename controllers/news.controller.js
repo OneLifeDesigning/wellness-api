@@ -25,7 +25,13 @@ module.exports.new = (req, res, next) => {
 module.exports.show = (req, res, next) => {
   News.findById(req.params.id)
     .then((news) => {
-      console.log(news);
+      res.status(200).json(news);
+    })
+    .catch(next);
+};
+module.exports.last = (req, res, next) => {
+  News.findOne({}, {}, { sort: { createdAt: 1 } })
+    .then((news) => {
       res.status(200).json(news);
     })
     .catch(next);
