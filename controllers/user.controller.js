@@ -280,9 +280,8 @@ module.exports.tutorize = (req, res, next) => {
 module.exports.edit = (req, res, next) => {
   const id =
     req.currentUser.role === "admin" ? req.params.id : req.currentUser.id;
-
   if (req.file) {
-    req.body.image = req.file.url;
+    req.body.avatar = req.file.url;
   }
 
   User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })

@@ -154,7 +154,7 @@ const createCamp = () => {
     name: faker.company.companyName(),
     edition: "I",
     description: faker.lorem.paragraph(),
-    image: faker.image.imageUrl(),
+    image: faker.image.image(),
     startDate: date.setDate(date.getDate()),
     endDate: date.setDate(date.getDate() + 10),
   });
@@ -169,7 +169,7 @@ const createCourses = (monitorId, campId) => {
       name: faker.company.companyName(),
       edition: "2020",
       description: faker.lorem.paragraph(),
-      image: faker.image.imageUrl(),
+      image: faker.image.image(),
       campId: campId,
       target,
       monitorId: monitorId,
@@ -197,7 +197,7 @@ const createLessons = async (monitorId, campStart, courses) => {
       const lesson = new Lesson({
         name: faker.lorem.sentence(),
         description: faker.lorem.paragraph(),
-        image: faker.image.imageUrl(),
+        image: faker.image.image(),
         content: faker.lorem.paragraphs(4),
         startDate: new Date(start.setDate(campStart.getDate() + index)),
         courseId: courses[z],
@@ -222,7 +222,7 @@ const createLessons = async (monitorId, campStart, courses) => {
 
 const createContents = async (monitorId, courses) => {
   const contents = [];
-  const contentTypes = ["comic", "memes"];
+  const contentTypes = ["comic", "meme"];
   for (let z = 0; z < courses.length; z++) {
     for (let m = 0; m < contentTypes.length; m++) {
       for (let index = 0; index < 2; index++) {
@@ -230,7 +230,7 @@ const createContents = async (monitorId, courses) => {
         const content = new Content({
           name: faker.lorem.sentence(),
           description: faker.lorem.paragraph(),
-          image: faker.image.imageUrl(),
+          image: faker.image.image(),
           type: contentTypes[num],
           courseId: courses[z],
           monitorId,
@@ -280,7 +280,7 @@ const createGames = async (lessons, monitorId) => {
     const game = new Game({
       name: faker.random.words(),
       description: faker.lorem.paragraph(),
-      image: faker.image.imageUrl(),
+      image: faker.image.image(),
       type: contentTypes[Math.floor(Math.random() * contentTypes.length)],
       url:
         "file:///Users/ajdc/Sites/ironhack/projects/gamecamp/games/r-type/index.html",
@@ -305,7 +305,7 @@ const createNews = (parentId, parentModel) => {
   const news = new News({
     name: faker.lorem.words(),
     subtitle: faker.lorem.sentence(),
-    image: faker.image.imageUrl(),
+    image: faker.image.image(),
     content: faker.lorem.paragraphs(),
     parentId,
     onModel: parentModel,
@@ -319,7 +319,7 @@ const createChat = async (campers, monitorId) => {
     const chat = new Chat({
       name: faker.lorem.words(),
       slogan: faker.lorem.sentence(),
-      image: faker.image.imageUrl(),
+      image: faker.image.image(),
       userId,
     });
     chat

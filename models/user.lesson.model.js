@@ -4,6 +4,10 @@ const Notification = require("../models/notification.model");
 
 const userLessonSchema = new mongoose.Schema(
   {
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
     lessonId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Lesson",

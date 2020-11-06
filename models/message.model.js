@@ -35,19 +35,36 @@ const messageSchema = new mongoose.Schema(
 messageSchema.pre("save", function (next) {
   UserChat.find({ chatId: this.chatId })
     .then((usersChats) => {
-      usersChats.map(async (userChat) => {
-        if (userChat.userId !== this.userId) {
-          const notification = new Notification({
+      usersChats.map((userChat) => {
+        Notification.findOneAndUpdate(
+          {
             parentId: this.chatId,
             userId: userChat.userId,
-          });
-          await notification
-            .save()
-            .then(() => next())
-            .catch((err) => next(err));
-        }
+          },
+          { isReaded: false },
+          { new: true, runValidators: true }
+        )
+          .then((itsHave) => {
+            console.log(itsHave);
+            if (!itsHave) {
+              if (userChat.userId.toString() !== this.userId.toString()) {
+                const notification = new Notification({
+                  parentId: this.chatId,
+                  onModel: "Chat",
+                  userId: userChat.userId,
+                });
+                notification
+                  .save()
+                  .then(() => {
+                    next();
+                  })
+                  .catch((err) => next(err));
+              }
+            }
+            next();
+          })
+          .catch((err) => next(err));
       });
-      next();
     })
     .catch((err) => next(err));
 });

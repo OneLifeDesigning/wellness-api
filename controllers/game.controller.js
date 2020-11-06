@@ -93,31 +93,15 @@ module.exports.start = (req, res, next) => {
 };
 
 module.exports.complete = (req, res, next) => {
-  console.log(req.body);
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    next(createError(403));
-    return;
-  }
-  if (!authHeader.split(" ")[0] === "Bearer") {
-    next(createError(403));
-    return;
-  }
   const { rating, score, comment } = req.body;
-  const token = authHeader.split(" ")[1];
 
-  token === null && next(createError(401));
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, _) => {
-    err && next(createError(403));
-    UserGame.findOneAndUpdate(
-      { token },
-      { rating, score, comment, isCompleted: true },
-      { new: true, runValidators: true }
-    )
-      .then(() => res.status(201).json())
-      .catch(next);
-  });
+  UserGame.findOneAndUpdate(
+    { id: req.params.id },
+    { rating, score, comment, isCompleted: true },
+    { new: true, runValidators: true }
+  )
+    .then(() => res.status(201).json())
+    .catch(next);
 };
 
 module.exports.findGame = (req, res, next) => {
@@ -128,28 +112,6 @@ module.exports.findGame = (req, res, next) => {
     .then((userGame) => res.status(201).json(userGame))
     .catch(next);
 };
-
-// module.exports.complete = (req, res, next) => {
-//   const { rating, score, comment } = req.body;
-//   const authHeader = req.headers.authorization;
-//   if (!authHeader && !authHeader.split(" ")[0] === "Bearer") {
-//     next(createError(403));
-//   }
-//   const token = authHeader.split(" ")[1];
-
-//   token === null && next(createError(401));
-
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, _) => {
-//     err && next(createError(403));
-//     UserGame.findOneAndUpdate(
-//       { token },
-//       { rating, score, comment, isCompleted: true },
-//       { new: true, runValidators: true }
-//     )
-//       .then(() => res.status(201).json())
-//       .catch(next);
-//   });
-// };
 
 module.exports.delete = (req, res, next) => {
   Game.findByIdAndDelete(req.params.id)

@@ -170,7 +170,13 @@ router.patch(
   upload.single("image"),
   lessonController.edit
 );
-router.post(
+router.get(
+  "/lessons/:id/completed",
+  authMiddleware.isAuthenticated,
+  lessonController.isCompleted
+);
+
+router.patch(
   "/lessons/:id/completed",
   authMiddleware.isAuthenticated,
   lessonController.completed
@@ -287,8 +293,16 @@ router.get(
   gameController.findGame
 );
 
-router.post("/games/complete/", gameController.complete);
-router.post("/games/:id/complete/", gameController.complete);
+router.post(
+  "/games/completed",
+  authMiddleware.isAuthenticated,
+  gameController.complete
+);
+router.post(
+  "/games/:id/completed",
+  authMiddleware.isAuthenticated,
+  gameController.complete
+);
 
 // News
 router.get("/news", newsController.all);
@@ -347,6 +361,11 @@ router.get(
   chatsController.getNotifications
 );
 
+router.patch(
+  "/notifications/:id",
+  authMiddleware.isAuthenticated,
+  chatsController.patchNotification
+);
 router.delete(
   "/notifications/:id",
   authMiddleware.isAuthenticated,

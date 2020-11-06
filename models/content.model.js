@@ -16,6 +16,7 @@ const contentSchema = new mongoose.Schema(
     },
     type: {
       type: String,
+      enum: ["comic", "meme"],
     },
     courseId: {
       type: mongoose.Schema.Types.ObjectId,

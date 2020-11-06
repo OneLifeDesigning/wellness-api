@@ -40,6 +40,17 @@ module.exports.edit = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.isCompleted = (req, res, next) => {
+  const lessonId = req.params.id;
+  const userId = req.currentUser.id;
+
+  UserLesson.findOne({ lessonId, userId })
+    .then((lesson) => {
+      console.log(lesson);
+      res.status(201).json(lesson);
+    })
+    .catch(next);
+};
 module.exports.completed = (req, res, next) => {
   const lessonId = req.params.id;
   const userId = req.currentUser.id;

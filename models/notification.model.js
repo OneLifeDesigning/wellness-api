@@ -2,13 +2,23 @@ const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema(
   {
-    parentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Chat",
+    isReaded: {
+      type: Boolean,
+      default: false,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      refPath: "onModel",
+    },
+    onModel: {
+      type: String,
+      required: true,
+      enum: ["Camp", "Course", "Lesson", "Game", "News", "Content", "Chat"],
     },
   },
   {
@@ -24,8 +34,9 @@ const notificationSchema = new mongoose.Schema(
     },
   }
 );
-notificationSchema.virtual("chat", {
-  ref: "Chat",
+
+notificationSchema.virtual("parent", {
+  ref: ["Camp", "Course", "Lesson", "Game", "News", "Content", "Chat"],
   localField: "parentId",
   foreignField: "_id",
 });
