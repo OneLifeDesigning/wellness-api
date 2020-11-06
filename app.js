@@ -26,6 +26,9 @@ app.use((req, _, next) => {
   next();
 });
 
+if (app.get("env") === "production") {
+  app.set("trust proxy", 1);
+}
 /**
  * Configure routes
  */
