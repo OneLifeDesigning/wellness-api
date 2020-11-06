@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("../config/db.config");
 const faker = require("faker");
+
 const Attachment = require("../models/attachment.model");
 const Camp = require("../models/camp.model");
 const Chat = require("../models/chat.model");
@@ -366,22 +367,22 @@ const createChat = async (campers, monitorId) => {
 
 const restoreDatabase = () => {
   return Promise.all([
-    User.deleteMany(),
-    Camp.deleteMany(),
-    Course.deleteMany(),
-    Lesson.deleteMany(),
-    Content.deleteMany(),
-    UserCamp.deleteMany(),
-    UserCourse.deleteMany(),
-    UserChat.deleteMany(),
-    UserGame.deleteMany(),
-    UserLesson.deleteMany(),
     Attachment.deleteMany(),
+    Camp.deleteMany(),
+    Chat.deleteMany(),
+    Content.deleteMany(),
+    Course.deleteMany(),
     Game.deleteMany(),
+    Lesson.deleteMany(),
+    Message.deleteMany(),
     News.deleteMany(),
     Notification.deleteMany(),
-    Chat.deleteMany(),
-    Message.deleteMany(),
+    UserCamp.deleteMany(),
+    UserChat.deleteMany(),
+    UserCourse.deleteMany(),
+    UserGame.deleteMany(),
+    UserLesson.deleteMany(),
+    User.deleteMany(),
     createAdmin(),
   ]);
 };
@@ -416,7 +417,7 @@ const seeds = async () => {
                                       })
                                       .catch((err) => console.log(err));
                                   }
-                                  await createChat(campers, monitor.id);
+                                  // await createChat(campers, monitor.id)
                                   await createUserCamp(campers, camp.id);
                                   console.log("Yarl");
                                 })

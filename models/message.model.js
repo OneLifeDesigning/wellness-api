@@ -45,7 +45,6 @@ messageSchema.pre("save", function (next) {
           { new: true, runValidators: true }
         )
           .then((itsHave) => {
-            console.log(itsHave);
             if (!itsHave) {
               if (userChat.userId.toString() !== this.userId.toString()) {
                 const notification = new Notification({

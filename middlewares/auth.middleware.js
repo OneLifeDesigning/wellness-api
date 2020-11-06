@@ -1,5 +1,4 @@
 const createError = require("http-errors");
-const jwt = require("jsonwebtoken");
 
 module.exports.isAuthenticated = (req, _, next) => {
   if (req.session.user) {
@@ -30,7 +29,6 @@ module.exports.isAdmin = (req, _, next) => {
 
 module.exports.isNotAuthenticated = (req, _, next) => {
   if (req.session.user) {
-    console.log(req.session.user);
     next(createError(403));
   } else {
     next();
