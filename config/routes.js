@@ -372,6 +372,7 @@ router.patch(
   authMiddleware.isAuthenticated,
   chatsController.patchNotification
 );
+
 router.delete(
   "/notifications/:id",
   authMiddleware.isAuthenticated,

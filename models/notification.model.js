@@ -6,6 +6,10 @@ const notificationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    msg: {
+      type: String,
+      default: false,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -18,7 +22,16 @@ const notificationSchema = new mongoose.Schema(
     onModel: {
       type: String,
       required: true,
-      enum: ["Camp", "Course", "Lesson", "Game", "News", "Content", "Chat"],
+      enum: [
+        "Camp",
+        "Course",
+        "Lesson",
+        "Game",
+        "News",
+        "Content",
+        "Chat",
+        "User",
+      ],
     },
   },
   {

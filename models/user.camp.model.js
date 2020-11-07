@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Notification = require("../models/notification.model");
 
 const userCampSchema = new mongoose.Schema(
   {
@@ -24,6 +25,21 @@ const userCampSchema = new mongoose.Schema(
     },
   }
 );
+userCampSchema.pre("save", function (next) {
+  const camp = this;
+  const notification = new Notification({
+    msg: `You are enrolled in camp`,
+    parentId: camp.campId,
+    onModel: "Camp",
+    userId: camp.campId,
+  });
+  notification
+    .save()
+    .then(() => {
+      next();
+    })
+    .catch((err) => next(err));
+});
 
 userCampSchema.virtual("camp", {
   ref: "Camp",

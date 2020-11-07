@@ -283,8 +283,7 @@ const createGames = async (lessons, monitorId) => {
       description: faker.lorem.paragraph(),
       image: faker.image.image(),
       type: contentTypes[Math.floor(Math.random() * contentTypes.length)],
-      url:
-        "file:///Users/ajdc/Sites/ironhack/projects/gamecamp/games/r-type/index.html",
+      url: "https://onelifedesigning.github.io/R-TYPE/",
       lessonId: lessons[i],
       monitorId,
     });

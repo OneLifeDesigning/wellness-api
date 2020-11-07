@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Notification = require("../models/notification.model");
+
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const SALT_WORK_FACTOR = 10;
@@ -148,6 +150,45 @@ userSchema.virtual("participants", {
 
 userSchema.pre("save", function (next) {
   const user = this;
+
+  if (user.tutorId) {
+    const notification = new Notification({
+      msg: `Wellcome ${user.name} ${user.lastname}`,
+      parentId: user.id,
+      onModel: "User",
+      userId: user.id,
+    });
+    notification
+      .save()
+      .then(() => {
+        const notification = new Notification({
+          msg: `Created successfully ${user.name} ${user.lastname}`,
+          parentId: user.tutorId,
+          onModel: "User",
+          userId: user.tutorId,
+        });
+        notification
+          .save()
+          .then(() => {
+            next();
+          })
+          .catch((err) => next(err));
+      })
+      .catch((err) => next(err));
+  } else {
+    const notification = new Notification({
+      msg: `Wellcome ${user.name} ${user.lastname}`,
+      parentId: user.id,
+      onModel: "User",
+      userId: user.id,
+    });
+    notification
+      .save()
+      .then(() => {
+        next();
+      })
+      .catch((err) => next(err));
+  }
 
   if (user.isModified("password") && user.password !== "") {
     bcrypt
