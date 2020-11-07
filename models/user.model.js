@@ -150,7 +150,13 @@ userSchema.virtual("participants", {
 
 userSchema.pre("save", function (next) {
   const user = this;
-
+  if (user.isModified("password") && user.password !== "") {
+    bcrypt.genSalt(SALT_WORK_FACTOR).then((salt) => {
+      return bcrypt.hash(user.password, salt).then((hash) => {
+        user.password = hash;
+      });
+    });
+  }
   if (user.tutorId) {
     const notification = new Notification({
       msg: `Wellcome ${user.name} ${user.lastname}`,
@@ -188,20 +194,6 @@ userSchema.pre("save", function (next) {
         next();
       })
       .catch((err) => next(err));
-  }
-
-  if (user.isModified("password") && user.password !== "") {
-    bcrypt
-      .genSalt(SALT_WORK_FACTOR)
-      .then((salt) => {
-        return bcrypt.hash(user.password, salt).then((hash) => {
-          user.password = hash;
-          next();
-        });
-      })
-      .catch((error) => next(error));
-  } else {
-    next();
   }
 });
 
