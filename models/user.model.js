@@ -150,13 +150,25 @@ userSchema.virtual("participants", {
 
 userSchema.pre("save", function (next) {
   const user = this;
-  if (user.isModified("password") && user.password !== "") {
-    bcrypt.genSalt(SALT_WORK_FACTOR).then((salt) => {
-      return bcrypt.hash(user.password, salt).then((hash) => {
-        user.password = hash;
-      });
-    });
+
+  if (user.isModified("password")) {
+    bcrypt
+      .genSalt(SALT_WORK_FACTOR)
+      .then((salt) => {
+        return bcrypt.hash(user.password, salt).then((hash) => {
+          user.password = hash;
+          next();
+        });
+      })
+      .catch((error) => next(error));
+  } else {
+    next();
   }
+});
+
+userSchema.post("save", function () {
+  const user = this;
+
   if (user.tutorId) {
     const notification = new Notification({
       msg: `Wellcome ${user.name} ${user.lastname}`,
@@ -173,14 +185,9 @@ userSchema.pre("save", function (next) {
           onModel: "User",
           userId: user.tutorId,
         });
-        notification
-          .save()
-          .then(() => {
-            next();
-          })
-          .catch((err) => next(err));
+        notification.save().then().catch();
       })
-      .catch((err) => next(err));
+      .catch();
   } else {
     const notification = new Notification({
       msg: `Wellcome ${user.name} ${user.lastname}`,
@@ -188,12 +195,7 @@ userSchema.pre("save", function (next) {
       onModel: "User",
       userId: user.id,
     });
-    notification
-      .save()
-      .then(() => {
-        next();
-      })
-      .catch((err) => next(err));
+    notification.save().then().catch();
   }
 });
 
