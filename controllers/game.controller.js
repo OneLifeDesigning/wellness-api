@@ -110,7 +110,7 @@ module.exports.complete = (req, res, next) => {
     { rating, score, comment, isCompleted: true },
     { new: true, runValidators: true }
   )
-    .then(() => res.status(201).json())
+    .then((userGame) => res.status(201).json(userGame))
     .catch(next);
 };
 

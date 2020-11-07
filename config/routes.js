@@ -277,7 +277,11 @@ router.patch(
   upload.single("image"),
   gameController.edit
 );
-
+router.patch(
+  "/games/:id/completed",
+  authMiddleware.isAuthenticated,
+  gameController.complete
+);
 router.delete(
   "/games/:id",
   authMiddleware.isAuthenticated,
