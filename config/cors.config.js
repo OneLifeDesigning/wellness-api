@@ -7,7 +7,7 @@ if (process.env.DEV === "dev") {
     credentials: true,
   });
   module.exports = corsMiddleware;
-} else {
+} else if (process.env.DEV === "production") {
   const whitelist = [process.env.CORS_ORIGIN_ONE, process.env.CORS_ORIGIN_TWO];
 
   const corsMiddleware = cors({
