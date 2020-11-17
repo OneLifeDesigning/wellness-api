@@ -2,15 +2,6 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth.middleware");
 const userController = require("../controllers/user.controller");
-const campController = require("../controllers/camp.controller");
-const courseController = require("../controllers/course.controller");
-const lessonController = require("../controllers/lesson.controller");
-const contentController = require("../controllers/content.controller");
-const attachmentController = require("../controllers/attachment.controller");
-const gameController = require("../controllers/game.controller");
-const newsController = require("../controllers/news.controller");
-const chatsController = require("../controllers/chat.controller");
-const homeController = require("../controllers/home.controller");
 const upload = require("./cloudinary.config");
 
 router.get("/home", authMiddleware.isAuthenticated, homeController.show);
