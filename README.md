@@ -1,3 +1,1 @@
-Game Camp API
-
-ENDPOINTS
+Api Test Wellness
