@@ -2,12 +2,9 @@ require("dotenv").config();
 
 const createError = require("http-errors");
 const express = require("express");
-const logger = require("morgan");
-const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
 require("./config/db.config");
-const session = require("./config/session.config");
 const cors = require("./config/cors.config");
 
 /**
@@ -15,21 +12,9 @@ const cors = require("./config/cors.config");
  */
 const app = express();
 
-if (app.get("env") === "production") {
-  app.set("trust proxy", 1);
-}
-
 app.use(cors);
-app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session);
-
-app.use((req, _, next) => {
-  req.currentUser = req.session.user;
-  next();
-});
 
 /**
  * Configure routes

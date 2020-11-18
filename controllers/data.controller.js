@@ -17,6 +17,7 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.read = (req, res, next) => {
+  console.log(req);
   Data.find({})
     .then((data) => res.status(200).json(data))
     .catch(next);
