@@ -16,20 +16,29 @@ module.exports.create = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.read = (req, res, next) => {
+module.exports.readAll = (req, res, next) => {
   Data.find({})
     .then((data) => res.status(200).json(data))
     .catch(next);
 };
 
+module.exports.read = (req, res, next) => {
+  Data.findById(req.params.id)
+    .then((data) => res.status(200).json(data))
+    .catch(next);
+};
+
 module.exports.update = (req, res, next) => {
-  Data.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
+  Data.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((user) => res.status(200).json(user))
     .catch(next);
 };
 
-module.exports.delete = (req, res) => {
-  Data.findByIdAndDelete(id)
+module.exports.delete = (req, res, next) => {
+  Data.findByIdAndDelete(req.params.id)
     .then((user) => res.status(204).json())
     .catch(next);
 };

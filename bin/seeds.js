@@ -41,7 +41,6 @@ const setData = async (dataFromCsv) => {
       .save()
       .then((data) => {
         console.log(data);
-        debugger;
       })
       .catch();
   });

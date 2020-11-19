@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "ec436d61-6299-4dd2-b42a-7d1fd035c45f",
+		"name": "Wellness Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Read - All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/data",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da1e49fa-a32b-499f-b62a-eeaf05a346ff",
+						"exec": [
+							"const response = pm.response.json()",
+							"pm.globals.set(\"dataId\", response.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"date\": \"2019-01-30T23:00:00.000Z\",\n  \"hours\": 23,\n  \"consumition\": 1323,\n  \"price\": 0.065330747,\n  \"cost\": 0.086432578281\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/data",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read - One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/data/{{dataId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data",
+						"{{dataId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update - One",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"hours\": 12\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/data/{{dataId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data",
+						"{{dataId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete - One",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"hours\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/data/{{dataId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"data",
+						"{{dataId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -7,27 +7,19 @@ const mongoose = require("mongoose");
 require("./config/db.config");
 const cors = require("./config/cors.config");
 
-/**
- * Configure express
- */
 const app = express();
 
 app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-/**
- * Configure routes
- */
 const router = require("./config/routes");
 app.use("/", router);
 
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function (error, req, res, next) {
   res.status(error.status || 500);
 
@@ -47,27 +39,17 @@ app.use(function (error, req, res, next) {
   res.json(data);
 });
 
-/**
- * Listen on provided port
- */
 const port = normalizePort(process.env.PORT || "3010");
 app.listen(port);
 
-// Helper functions
-
-/**
- * Normalize a port into a number, string, or false.
- */
 function normalizePort(val) {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
-    // named pipe
     return val;
   }
 
   if (port >= 0) {
-    // port number
     return port;
   }
 
