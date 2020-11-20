@@ -1,6 +1,26 @@
 # Wellness TechGroup - API
 
-Para iniciar el repositorio:
+### Descripción
+
+Demo de API basada en NodeJs, ExpressJs y MongoDB que nos permite realizar operaciones sencillas de CRUD.
+
+**_Requerimiento_**
+_Importar valores desde un fichero CSV, con columnas y datos ficticios, y almacenarlo en BBDD (NoSQL)_
+
+> **Solución**
+> Creo un script que se encarga de obtener todos los ficheros de una carpeta y convertirlos a objeto JSON para poder manipularlos e inyectarlos en la base de datos.
+
+---
+
+**_Requerimiento_**
+_Backend NodeJS: encargado de importar los datos y exponerlos en una API que permita hacer operaciones CRUD sobre los datos_
+
+> **Solución**
+> Creo los endpoints necesarios para la obtención y edición de los datos (CRUD) en el archivo config/routes.js el cual llama al middledware controlador que realiza la operación correspondiente y retorna un json o un error.
+
+---
+
+Iniciar repositorio:
 
 ### Clone GitHub
 
@@ -25,25 +45,9 @@ Ejecuta el sistema de carga y conversión de datos a partir de csv de la carpeta
 
 `npm run dev`
 
-Ejecuta el modo desarrollo y usa el host:puerto: [http://localhost:3010](http://localhost:3010).
+Ejecuta el modo desarrollo y usa el host/puerto: [http://localhost:3010](http://localhost:3010).
 
-### Descripción
-
-Demo de API basada en NodeJs, ExpressJs y MongoDB que nos permite realizar operaciones sencillas de CRUD.
-
-`**Requerimiento**`
-`Importar valores desde un fichero CSV, con columnas y datos ficticios, y almacenarlo en BBDD (NoSQL)`
-
-## Solución
-
-Creo un script que se encarga de obtener todos los ficheros de una carpeta y convertirlos a objeto JSON para poder manipularlos e inyectarlos en la base de datos.
-
-`**Requerimiento**`
-`Backend NodeJS: encargado de importar los datos y exponerlos en una API que permita hacer operaciones CRUD sobre los datos`
-
-## Solución
-
-Creo los endpoints necesarios para la obtención y edición de los datos (CRUD) en el archivo config/routes.js el cual llama al middledware controlador que realiza la operación correspondiente y retorna un json o un error.
+### Notas
 
 Todos los endpoints son testeados de forma automática ejecutando `npm run test` o con la herramienta Postman de forma manual.
 
