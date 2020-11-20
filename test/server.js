@@ -14,6 +14,6 @@ const router = require("../config/routes");
 
 app.use("/", router);
 
-app.listen(3011);
+app.listen(3001);
 
 module.exports = app;

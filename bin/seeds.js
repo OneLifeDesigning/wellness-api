@@ -39,9 +39,7 @@ const setData = async (dataFromCsv) => {
     const data = new Data(newData);
     data
       .save()
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch();
   });
 };

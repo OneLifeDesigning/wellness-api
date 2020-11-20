@@ -18,6 +18,7 @@ module.exports.create = (req, res, next) => {
 
 module.exports.readAll = (req, res, next) => {
   Data.find({})
+    .sort({ date: -1 })
     .then((data) => res.status(200).json(data))
     .catch(next);
 };
