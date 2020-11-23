@@ -11,11 +11,14 @@ const dataFolder = path.join(__dirname, "./csv");
 const getData = async () => {
   await fs.readdirSync(dataFolder).forEach((file) => {
     const filePath = `${dataFolder}/${file}`;
+    console.log(filePath);
     const stream = fs.createReadStream(filePath);
+
     const csvData = [];
     const csvStream = fastcsv
-      .parse()
-      .on("data", function (data) {
+      .parse({ discardUnmappedColumns: true })
+      .on("data", (data) => {
+        console.log(data);
         data[0] !== undefined &&
           csvData.push({
             date: new Date(data[0]),
@@ -27,9 +30,9 @@ const getData = async () => {
       })
       .on("end", async () => {
         csvData.shift();
+        console.log(csvData.length);
         await setData(csvData);
       });
-
     stream.pipe(csvStream);
   });
 };
@@ -39,7 +42,7 @@ const setData = async (dataFromCsv) => {
     const data = new Data(newData);
     data
       .save()
-      .then((data) => {})
+      .then(() => {})
       .catch();
   });
 };
@@ -51,9 +54,7 @@ const seeds = async () => {
   await restoreDatabase()
     .then(async () => {
       await getData()
-        .then((data) => {
-          console.log(data);
-        })
+        .then(() => {})
         .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
